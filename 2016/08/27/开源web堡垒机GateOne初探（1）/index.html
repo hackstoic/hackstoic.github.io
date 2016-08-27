@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>开源web堡垒机GateOne初探（1） | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">开源web堡垒机GateOne初探（1）</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">开源web堡垒机GateOne初探（1）</h1><div class="post-meta">Aug 27, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>Gateone是一个基于tornado和html5技术的开源web ssh项目，功能很强大， 支持多个账户多个终端窗口连接远程机器， 支持多种认证登陆方式， 支持嵌入到各种web应用，支持多种插件等等。</p>
+<p>【背景】</p>
+<p>最近公司项目要求做一个web ssh工具，能够在网页上登陆交换机，即web ssh功能。第一时间到网上查找有没有对应的开源方案可以借鉴， 大致调研了一下，有如下的方案可以参考：</p>
+<ol>
+<li><p>shellinabox</p>
+</li>
+<li><p>浏览器插件secure shell 或者 firessh</p>
+</li>
+<li><p>java applet 技术 mindterm</p>
+</li>
+<li><p>在浏览器中使用securecrt</p>
+</li>
+</ol>
+<p>上面各个方案局限性较大，这里不做赘述。</p>
+<p>本文主要介绍一种更加完美和强大的web ssh方案：  GateOne</p>
+<p>【GateOne简介】</p>
+<p>Gate One是一款基于html5实现的ssh客户端，有如下特点：</p>
+<p>不需要任何浏览器插件</p>
+<p>支持多用户和多终端，同时支持上百个用户和终端</p>
+<p>终端支持高级特性，例如256色彩，高级文本样式支持</p>
+<p>支持终端截图，保存为图片和pdf文件</p>
+<p>多语言支持</p>
+<p>支持复制和粘贴，快捷键支持</p>
+<p>终端会话持久化，关闭浏览器不会影响终端的运行</p>
+<p>支持服务器记录用户会话到syslog</p>
+<p>支持嵌入到其他系统。</p>
+<p>支持多种用户验证方式。匿名，Kerberos，SSO，PAM,Google Auth…</p>
+<p>轻松定制化。支持插件形式的扩展，插件支持多语言，python,js,css</p>
+<p>用户连接时，可以关闭和启动服务器（用户的ssh会话保留）</p>
+<p>ssh插件支持复制会话，支持使用密钥登录</p>
+<p>系统支持Python 2.6,Python 3，pypy</p>
+<p>更多的介绍可以参考gateone的官网介绍（列举了gateone的19条特性）</p>
+<p><a href="http://liftoffsoftware.com/Products/GateOne" target="_blank" rel="external">http://liftoffsoftware.com/Products/GateOne</a></p>
+<p>官网有demo，可以先去体验一下： <a href="http://gateone1.ln.liftoffsoftware.com/" target="_blank" rel="external">http://gateone1.ln.liftoffsoftware.com/</a></p>
+<p>【部署方法和过程】</p>
+<p>下面主要讲部署的过程和方法。</p>
+<p>系统运行环境： ubuntukylin 14.04  python 2.7.8  GateOne 1.1.0 （截止2015.5.9的最新软件版本）</p>
+<p>主要参考资源： </p>
+<p>gateone github  ： <a href="https://github.com/liftoff/GateOne" target="_blank" rel="external">https://github.com/liftoff/GateOne</a></p>
+<p>gateone document  :  liftoff.github.io/GateOne/index.html</p>
+<p>网络上的安装方法针对的是以前的版本， 不少方法都已经过时。针对新版本的安装方法叙述如下。</p>
+<p>有三种方式 按照简单排序就是docker镜像安装法， 源码安装法，deb或rpm包安装法</p>
+<p><strong>*</strong>docker 镜像安装法<strong>*</strong></p>
+<p>可以从docker官方仓库下载liftoff/gateone</p>
+<p>sudo docker pull liftoff/gateone</p>
+<p>或者下载dockerfile自己build一个</p>
+<p>sudo docker build -t liftoff/gateone .</p>
+<p>镜像生成后，运行容器的命令也很简单</p>
+<p>sudo docker run -d –name=gateone -p 443:8000 liftoff/gateone</p>
+<p>&lt;&lt;&lt;&lt;&lt;扩展阅读&gt;&gt;&gt;&gt;</p>
+<p>镜像创建教程参见：<a href="http://dockerpool.com/static/books/docker_practice/image/create.html" target="_blank" rel="external">http://dockerpool.com/static/books/docker_practice/image/create.html</a><br>镜像下载教程参见 <a href="http://dockerpool.com/static/books/docker_practice/image/pull.html" target="_blank" rel="external">http://dockerpool.com/static/books/docker_practice/image/pull.html</a> </p>
+<p>容器运行教程参见 <a href="http://dockerpool.com/static/books/docker_practice/container/run.html" target="_blank" rel="external">http://dockerpool.com/static/books/docker_practice/container/run.html</a></p>
+<p>gateone docker用法参见： <a href="https://github.com/liftoff/GateOne/tree/master/docker" target="_blank" rel="external">https://github.com/liftoff/GateOne/tree/master/docker</a></p>
+<p>gateone dockerfile说明： <a href="https://registry.hub.docker.com/u/liftoff/gateone/dockerfile/" target="_blank" rel="external">https://registry.hub.docker.com/u/liftoff/gateone/dockerfile/</a> </p>
+<p><strong><strong>源码安装法*</strong></strong></p>
+<p>从github下载源码后，进入代码目录</p>
+<p>运行 sudo python setup.py install </p>
+<p>会自动安装各种依赖包，直至gateone安装完成。</p>
+<p><strong>*</strong>deb或rpm包安装法<strong>*</strong></p>
+<p>先用源码打包成deb包或者rpm包，再进行安装，具体方法见</p>
+<p><a href="http://liftoff.github.io/GateOne/About/index.html#installation" target="_blank" rel="external">http://liftoff.github.io/GateOne/About/index.html#installation</a></p>
+<p>安装完后运行程序</p>
+<p>python run_gateone.py</p>
+<p>然后用火狐浏览器打开 <a href="https://127.0.0.1:10443" target="_blank" rel="external">https://127.0.0.1:10443</a>  (后面的10443端口，根据具体情况而定，要看程序运行时侦听了哪个端口)，就可以看到web ssh界面了。</p>
+<p>备注：我部署后，用谷歌浏览器打开页面时会有问题，无法弹出ssh登陆界面，但是看官方的demo是没有这个问题的。原因暂时没有找到。 </p>
+<p>&lt;&lt;&lt;&lt;&lt;扩展阅读&gt;&gt;&gt;&gt;&gt;</p>
+<p>如果你的系统环境和本人不一致，如centos，或者使用了老的gateone版本进行安装，按照上面的安装出现问题，请参见官方文档的说明，或者以下几篇博文。或许对你有帮助。</p>
+<p><a href="http://blog.csdn.net/rexkang/article/details/40819537" target="_blank" rel="external">http://blog.csdn.net/rexkang/article/details/40819537</a></p>
+<p><a href="http://itnihao.blog.51cto.com/1741976/1311506" target="_blank" rel="external">http://itnihao.blog.51cto.com/1741976/1311506</a></p>
+<p><a href="http://www.shencan.net/index.php/2013/10/19/gate-one-web%E7%89%88%E7%9A%84ssh%E7%BB%88%E7%AB%AF/" target="_blank" rel="external">http://www.shencan.net/index.php/2013/10/19/gate-one-web%E7%89%88%E7%9A%84ssh%E7%BB%88%E7%AB%AF/</a></p>
+<p>——————————————————–未完待续</p>
+<p>Read more                                                                                                                    </p>
+<p>微信扫一扫<br>关注该公众号</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/08/27/开源web堡垒机GateOne初探（1）/" data-id="cisdc82p7000c503hllt642k4" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/27/开源web堡垒机GateOne初探（2）/" class="pre">开源web堡垒机GateOne初探（2）</a><a href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/" class="next">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">浅谈日志分析系统ELK</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/25/Google_App_Engine_Incident_16008/">Google_App_Engine_Incident_16008</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/谷歌云服务出现大面积故障的原因公布/">谷歌云服务出现大面积故障的原因公布</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/微信命令行/">微信命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/定时关闭和启动ec2实例的7种方法/">定时关闭和启动ec2实例的7种方法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

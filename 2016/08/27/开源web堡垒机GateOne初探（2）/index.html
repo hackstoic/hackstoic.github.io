@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>开源web堡垒机GateOne初探（2） | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">开源web堡垒机GateOne初探（2）</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">开源web堡垒机GateOne初探（2）</h1><div class="post-meta">Aug 27, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>本文主要介绍基于GateOne搭建web 版的putty，并集成到你的应用里。 网上的教程大多过时， 官网文档的介绍是英文的，而且知识点比较零散。 本篇教程是基于自己的开发实战写的。 希望能减少大家自己摸索的时间。</p>
+<p>基于GateOne搭建web 版的putty，并集成到你的应用里。 </p>
+<p>安装方法，请参考我之前写的一篇文章:  开源web堡垒机GateOne初探（1）. </p>
+<p>输入关键词gateone进行查看</p>
+<p>这里需要对前一篇文章做下补充说明：<br>经过几个星期的测试， 发现GateOne在github的master分支，有较多bug。 建议下载最新的分支代码（截至日期2015.6.17）。 </p>
+<p>附下载链接：<a href="https://github.com/liftoff/GateOne/archive/GateOne-a34f7e0a9215ca4868f1bbdfe29cea217d444863.zip" target="_blank" rel="external">https://github.com/liftoff/GateOne/archive/GateOne-a34f7e0a9215ca4868f1bbdfe29cea217d444863.zip</a> </p>
+<p>如果连接github有问题， 也可以从我的百度网盘下载： <a href="http://pan.baidu.com/s/1gd6dqBh" target="_blank" rel="external">http://pan.baidu.com/s/1gd6dqBh</a> </p>
+<p>下面介绍下如何配置GateOne，并集成到你的应用里。</p>
+<p>【 解压并进入代码目录】</p>
+<p>cd  GateOne-a34f7e0a9215ca4868f1bbdfe29cea217d444863/</p>
+<p>运行一遍run_gateone.py脚本， 这时会生成一个conf.d目录， gateone的配置文件放在这个目录下</p>
+<p>sudo python run_gateone.py  –new_api_key  </p>
+<p>【 进入conf.d 修改对应的配置文件】</p>
+<p>$ ls conf.d </p>
+<p>10server.conf  20authentication.conf  30api_keys.conf  50terminal.conf<br>$ vim 10server.conf</p>
+<p>把”origins”: [“localhost:10443”, “127.0.0.1:10443”, “VMS02911:10443”],<br>—-&gt;  修改成 “origins”: [“localhost:10443”, “127.0.0.1:10443”, “VMS02911:10443”，  ],<br>^ 在这里添加允许跨域访问gateone server的ip和端口， 即你的应用所在的服务器和端口</p>
+<p>比如，我部署了web应用在192.168.1.1 上面，通过8080端口， 我的gateone部署在192.168.1.2 上面， 这时候你就需要添加”192.168.1.1:8080”,否则你的应用访问gateone server的时候会有403错误， 无法嵌入web ssh页面</p>
+<p>$ vim 20authentication.conf</p>
+<p>把 “auth”: “none”,<br>—–&gt; 修改成”auth”: “api “,</p>
+<p>使用api进行验证应用，开启该项后， 没有通过验证的应用无法嵌入web ssh页面</p>
+<p>$ cat  30api_keys.conf</p>
+<p>查看api ,左边的MDAzODhiYTY0ZmNjNDgzOGI2MmZjZWU1YTRhN2U1ZGYwR为secret ， 右边的ZDdmMWQxNzMzYzA0NGI0Y2JmOWVlMmJlOWIzNmE4ZDljL 为api key</p>
+<p>这两个是做验证用的， 下面会讲到怎么用<br>// This file contains the key and secret pairs used by Gate One’s API authentication method.<br>{<br>“*”: {<br>“gateone”: {<br>“api_keys”: {<br>“MDAzODhiYTY0ZmNjNDgzOGI2MmZjZWU1YTRhN2U1ZGYwR”: “ZDdmMWQxNzMzYzA0NGI0Y2JmOWVlMmJlOWIzNmE4ZDljL”<br>}<br>}<br>}<br>}</p>
+<p>【编写一个提供验证的接口】</p>
+<p>（这里提供python的代码示例, 其它编程语言的示例请移步官方文档<a href="http://liftoff.github.io/GateOne/Developer/embedding.html#example-api-authentication-code" target="_blank" rel="external">http://liftoff.github.io/GateOne/Developer/embedding.html#example-api-authentication-code</a> )<br>def generate_gate_one_auth_obj():<br>    import time, hmac, hashlib, json<br>    secret = “MDAzODhiYTY0ZmNjNDgzOGI2MmZjZWU1YTRhN2U1ZGYwR”<br>    authobj = {<br>    ‘api_key’: “ZDdmMWQxNzMzYzA0NGI0Y2JmOWVlMmJlOWIzNmE4ZDljL”,<br>    ‘upn’: “ctools”,<br>    ‘timestamp’: str(int(time.time() * 1000)),<br>    ‘signature_method’: ‘HMAC-SHA1’,<br>    ‘api_version’: ‘1.0’<br>    }<br>    my_hash = hmac.new(secret, digestmod=hashlib.sha1)<br>    my_hash.update(authobj[‘api_key’] + authobj[‘upn’] +     authobj[‘timestamp’])<br>    authobj[‘signature’] = my_hash.hexdigest()<br>    valid_json_auth_object = json.dumps(authobj)<br>    return valid_json_auth_object</p>
+<p>这个函数可以生成认证所需要的认证信息（json格式），如下示例(伪造的示例，仅做格式参考)</p>
+<p>{“upn”: “ctools”, “signature_method”: “HMAC-SHA1”, “timestamp”: “1434545252254”, “signature”: “7777e365f2a6b2212149e066fde1d4596ade5af”, “api_key”: “ZDdmMWQxNzMzYzA0NGI0Y2JmOWVlMmJlOWIzNmE4ZDljL”, “api_version”: “1.0”}</p>
+<p>【嵌入你的web应用】</p>
+<p>上面的工作做完之后， 就可以开始在你的web应用嵌入gateone的web ssh页面了</p>
+<div id="gateone_container" style="position: relative; width: 80%; height: 30em;margin: 0 auto"><br>    <div id="gateone"></div><br></div>
+
+<!--必须先引入gateone.js -->
+<script type="text/javascript" src="/static/js/gateone/gateone.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){     
+        var request = $.ajax({
+            url:'/get_auth_obj',  // 这里填写提供接口验证的访问地址
+            type:"GET",
+            dataType:"json",
+        });
+        request.done(function(auth_data){            
+            GateOne.init({
+                auth:auth_data,
+                url: "https://192.168.1.2/",  // 这里是搭建gateone的ip或对应网址  
+
+            });
+        });
+
+    }); // end of document ready
+
+</script>
+
+
+<p>这时候打开并访问对应的页面就可以愉快的使用你的专属定制版web ssh了。</p>
+<p>如果有机会， 我会在后面讲解更多的配置，和更高级的应用。 敬请期待。</p>
+<p>微信扫一扫<br>关注该公众号</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/08/27/开源web堡垒机GateOne初探（2）/" data-id="cisdc82p8000d503h1s83bz4h" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/27/开源web堡垒机GateOne初探（1）/" class="next">开源web堡垒机GateOne初探（1）</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">浅谈日志分析系统ELK</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/25/Google_App_Engine_Incident_16008/">Google_App_Engine_Incident_16008</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/谷歌云服务出现大面积故障的原因公布/">谷歌云服务出现大面积故障的原因公布</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/微信命令行/">微信命令行</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/21/定时关闭和启动ec2实例的7种方法/">定时关闭和启动ec2实例的7种方法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
