@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>gopher meetup 深圳站2016-08-28 | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">gopher meetup 深圳站2016-08-28</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">gopher meetup 深圳站2016-08-28</h1><div class="post-meta">Aug 28, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>主要的讲师和安排如下：</p>
+<ul>
+<li>谢孟军     逼格             Go基金会介绍</li>
+<li>陈晓黎   两点一线        人工智能在资产管理方面的应用  </li>
+<li>陈非       腾讯               如何用Go打造一个mysql中间件</li>
+<li>杨文       小恩爱           小恩爱Go 语言之路</li>
+<li>艾义        ASTRI          Go语言学习及项目实战经验分享</li>
+<li>李亚川  众联网游         Go语言爬虫Pholcus的开发经验分享</li>
+</ul>
+<h1 id="Go基金会介绍"><a href="#Go基金会介绍" class="headerlink" title="Go基金会介绍"></a>Go基金会介绍</h1><p>促进golang在中国的发展<br>社区 ＋ 企业 ＋ 高校<br>正在落实中</p>
+<h1 id="人工智能在资产管理方面的应用"><a href="#人工智能在资产管理方面的应用" class="headerlink" title="人工智能在资产管理方面的应用"></a>人工智能在资产管理方面的应用</h1><p>讲目前很火的机器人投顾领域的golang应用<br>golang的机器学习库整体还是不如python</p>
+<h1 id="如何用Go打造一个mysql中间件"><a href="#如何用Go打造一个mysql中间件" class="headerlink" title="如何用Go打造一个mysql中间件"></a>如何用Go打造一个mysql中间件</h1><blockquote>
+<p>干货较多的一个分享</p>
+</blockquote>
+<h2 id="现有的mysql-proxy-方案"><a href="#现有的mysql-proxy-方案" class="headerlink" title="现有的mysql proxy 方案"></a>现有的mysql proxy 方案</h2><p>atlas： 扩展性不高， 基本不维护<br>cobar： 基本不再维护<br>mycat： 功能复杂， 商业化</p>
+<h2 id="新方案"><a href="#新方案" class="headerlink" title="新方案"></a>新方案</h2><p>kingshard<br>优点：</p>
+<ol>
+<li>读写分离</li>
+<li>支持数据分片</li>
+<li>开发专注业务逻辑</li>
+<li>db的上下线无感知</li>
+</ol>
+<h2 id="SQL-Parser的设计"><a href="#SQL-Parser的设计" class="headerlink" title="SQL Parser的设计"></a>SQL Parser的设计</h2><p>词法分析器： sql的切片<br>语法分析器： 目的是读写分离， 数据分片<br>数据分片： hash， range， time<br>二级映射： ？？</p>
+<h2 id="连接池设计"><a href="#连接池设计" class="headerlink" title="连接池设计"></a>连接池设计</h2><p>一个db实例对应一个连接池<br>复用连接， 减少后端db压力<br>无空闲连接则阻塞， 提升用户体验</p>
+<h2 id="安全和审计"><a href="#安全和审计" class="headerlink" title="安全和审计"></a>安全和审计</h2><p>客户端ip限制<br>sql黑名单，正则匹配，基于语法树进行判断更佳<br>慢查询sql记录</p>
+<h2 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h2><p>db的高可用： 自动踢掉down掉的节点<br>怎么保证kingshard自身的高可用？lvs ＋ keepalived</p>
+<p>kingshard 不支持自增id，但是可以通过外部的id生成器来实现， 不支持判断node主从同步是否完全达到数据同步</p>
+<h1 id="小恩爱Go-语言之路"><a href="#小恩爱Go-语言之路" class="headerlink" title="小恩爱Go 语言之路"></a>小恩爱Go 语言之路</h1><blockquote>
+<p>golang的企业应用， 高并发系统的构建实践</p>
+</blockquote>
+<p>70-80%的后端程序使用go开发<br>6个虚拟机4c＊4g， 抗住1亿pv并发<br>因为ruby使用的一些坑， 使用go重构了后端代码</p>
+<p>依赖包管理 ： godep<br>所有的依赖都放在一个repo</p>
+<h1 id="Go语言学习及项目实战经验分享"><a href="#Go语言学习及项目实战经验分享" class="headerlink" title="Go语言学习及项目实战经验分享"></a>Go语言学习及项目实战经验分享</h1><blockquote>
+<p>时间最长的一次分享, 前面介绍了很多通信方面的背景知识，时间一久，注意力容易泛散， 有点跟不上讲师的思路</p>
+</blockquote>
+<p>严谨的程序员，使用开源库， 先研究开源库代码<br>golang在ICT领域的应用<br>tcp server 的设计<br>code generator 减少代码量，代码自动生成</p>
+<h1 id="Go语言爬虫Pholcus的开发经验分享"><a href="#Go语言爬虫Pholcus的开发经验分享" class="headerlink" title="Go语言爬虫Pholcus的开发经验分享"></a>Go语言爬虫Pholcus的开发经验分享</h1><blockquote>
+<p>如果对爬虫没有一些了解， 直接听源码分析一头雾水。 讲师如果能介绍一些背景，还有介绍下为什么要做这个开源项目， 这个开源项目跟现有的爬虫开源项目比，有什么优点这些，他的一些设计理念等等， 我想这也是我们感兴趣的。</p>
+</blockquote>
+<p>介绍了pholcus的架构设计等<br>源码分析<br>6个golang技巧（总结得不错， 值得一看）</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/08/28/0gopher meetup 深圳站2016-08-28/" data-id="cisestpf60000p63huyjtjbsi" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/27/开源web堡垒机GateOne初探（2）/" class="next">开源web堡垒机GateOne初探（2）</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">浅谈日志分析系统ELK</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/25/Google_App_Engine_Incident_16008/">Google_App_Engine_Incident_16008</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/谷歌云服务出现大面积故障的原因公布/">谷歌云服务出现大面积故障的原因公布</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/微信命令行/">微信命令行</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
