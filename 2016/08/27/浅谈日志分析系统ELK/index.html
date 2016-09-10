@@ -1,1 +1,92 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>浅谈日志分析系统ELK | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">浅谈日志分析系统ELK</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">浅谈日志分析系统ELK</h1><div class="post-meta">Aug 27, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/08/27/浅谈日志分析系统ELK/" data-id="cisestpg9000kp63hpaxw6eup" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/27/数据分析遐想/" class="pre">数据分析遐想</a><a href="/2016/08/25/Google_App_Engine_Incident_16008/" class="next">Google_App_Engine_Incident_16008</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">浅谈日志分析系统ELK</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/25/Google_App_Engine_Incident_16008/">Google_App_Engine_Incident_16008</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/24/谷歌云服务出现大面积故障的原因公布/">谷歌云服务出现大面积故障的原因公布</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/微信命令行/">微信命令行</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>ELK不权威指南 | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">ELK不权威指南</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">ELK不权威指南</h1><div class="post-meta">Aug 27, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>ELK的简单科普文章，加入了自己的一些理解。 内容包括ELK的基本介绍， 应用场景， 架构设计， 监控及自监控， 业界进展及推荐资料等。 </p>
+<h1 id="用户故事"><a href="#用户故事" class="headerlink" title="用户故事"></a>用户故事</h1><h2 id="场景一"><a href="#场景一" class="headerlink" title="场景一"></a>场景一</h2><p>作为一个运维工程师， 某天虚拟机出现故障， 想看看虚拟机是否有异常日志，物理机上是否有异常日志，  管理物理机的云平台／系统是否有发生异常日志， 一个个主机 系统登陆过去， 输入账号密码费时费力，有时还会出现记不住密码干着急的情况，大大影响了排障的效率。  有没有一个系统，能够集中查看和搜索日志，不需要繁琐的登陆，  方便的获取排障所需的重要信息， 有异常还能够订阅？</p>
+<h2 id="场景二"><a href="#场景二" class="headerlink" title="场景二"></a>场景二</h2><p>作为一个开发人员， 开发的系统经常需要调用外部的api， 每次出现问题需要去查看日志，看是哪个环节出现问题， 是调用第三方api出错，还是连接数据库出错，只能一个一个查。 另外还会遇到的问题是， 有时候无意中grep了一个大的文件，导致iowait冲高，引发不必要的系统异常告警。 有没有一个工具能够提供各种仪表盘，每次打开一个页面就能一目了然的看到调用各个api的情况，调用了多少次， 失败了多少次？</p>
+<h2 id="场景三"><a href="#场景三" class="headerlink" title="场景三"></a>场景三</h2><p>开发人员上线新版本，上线过程中可能会出现各种问题。  有时不能及时发现会引起哪些异常，对其它系统有哪些影响。有没有一个工具 可以看到和分析上线新版本前后的变化？这样 就能有助于分析相应的故障是否是和上线新版本有关了。 </p>
+<h2 id="场景四"><a href="#场景四" class="headerlink" title="场景四"></a>场景四</h2><p>作为一个团队领导， 团队开发产品已经上线一段时间了， 希望看到产品有多少人访问， 哪个功能访问了多少次，模块的出错率如何，每次都到机器上去跑分析脚本，费时费力，还不直观， 如果产品部署在分布式集群统计起来更是麻烦， 有没有一个系统能以更加简便的方式可以查看到这些情况？</p>
+<p>上述的问题，ELK统统可以解决。 </p>
+<h1 id="ELK是什么鬼"><a href="#ELK是什么鬼" class="headerlink" title="ELK是什么鬼?"></a>ELK是什么鬼?</h1><p>简而言之， 如果说日志是埋在土里的宝藏，那么ELK是开采宝藏的蓝翔挖掘机。 </p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ELK是一套解决方案而不是一款软件， 三个字母分别是三个软件产品的缩写。  E代表Elasticsearch,负责日志的存储和检索； L代表Logstash, 负责日志的收集，过滤和格式化；K代表Kibana，负责日志的展示统计和数据可视化。 </p>
+<p>其中Elasticsearch是整个ELK的核心， L和K都有相应的替代方案。 这里重点介绍下ElasticSearch（下面简称es）的一些知识。 </p>
+<h2 id="相关架构概念"><a href="#相关架构概念" class="headerlink" title="相关架构概念"></a>相关架构概念</h2><p><img src="./_image/2016-08-30 21-36-02.png" alt=""></p>
+<ul>
+<li>上面是一个1个node， 2个replica， 3个shard的结构</li>
+<li>cluster（集群）由多个node（节点）组成</li>
+<li>数据会被索引，并保存在index里（类比RDBMS里的DB)</li>
+<li>一个index可以切成多个shard（分片），每个shard可以有多个replica（副本）</li>
+<li>node分为三种类型， 分别是master node，data node ，client node。 每个cluster会有一个node被选举成master，负责维护cluster state data。 </li>
+<li>shard均匀分布在所有可用的data node</li>
+</ul>
+<h2 id="ES-和-关系型数据库的概念比较"><a href="#ES-和-关系型数据库的概念比较" class="headerlink" title="ES 和 关系型数据库的概念比较"></a>ES 和 关系型数据库的概念比较</h2><p>ES本身可以理解为自带搜索引擎的数据库。 有些概念可以和关系型数据库（比如说MySQL） 进行对比。 概念的对比如下表所示：</p>
+<p><img src="./_image/2016-08-30 21-46-34.png" alt=""></p>
+<h2 id="ELK-vs-Linux-Grep"><a href="#ELK-vs-Linux-Grep" class="headerlink" title="ELK vs Linux Grep"></a>ELK vs Linux Grep</h2><table>
+<thead>
+<tr>
+<th>ELK</th>
+<th>Grep</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>多台机器的日志可以集中查询</td>
+<td>只能查看一台机器的日志</td>
+</tr>
+<tr>
+<td>UI界面显示查询结果</td>
+<td>无数据可视化功能</td>
+</tr>
+<tr>
+<td>支持多维度复杂查询</td>
+<td>较难实现</td>
+</tr>
+<tr>
+<td>查询效率高， 亿条数据秒级查询</td>
+<td>需要登陆系统，进到相关目录， 编写规则， 查询大文件效率低，且对磁盘io也是有影响</td>
+</tr>
+<tr>
+<td>实时性好， 自动索引展示， 配合第三方工具，可以做实时告警</td>
+<td>实时性差， 只能出问题，再到系统去查看</td>
+</tr>
+<tr>
+<td>提供了api接口供第三方工具集成</td>
+<td>没有api接口</td>
+</tr>
+<tr>
+<td>可以查看历史趋势</td>
+<td>不能</td>
+</tr>
+</tbody>
+</table>
+<h1 id="ELK能做什么"><a href="#ELK能做什么" class="headerlink" title="ELK能做什么?"></a>ELK能做什么?</h1><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>安全领域<br>通过分析系统日志， 发现攻击或者非法访问行为，可以追踪定位相关安全问题。 比如结合FreeIPA(一款集成的安全信息管理解决方案)， 可以做一些暴力破解行为可视化分析等。 </li>
+<li>网络领域<br>日志分析和监控可以作为网络设备监控的一种补充， 其它监控系统，如zabbix大多是通过snmp的方式来获取网络设备的性能数据， 这种方式有其局限性，如无法监控端口的flapping， 无法监测到设备引擎挂掉等情况。 此外由于snmp监控的方案通用型不好， 各个厂商有自己的私有OID, 意味着需要对这些不同的厂商适配不同的监控模板。 另外， snmp获取数据的实时性相对会比syslog日志慢一些。   </li>
+<li><p>应用领域<br>分析和展示移动端业务的实时情况，如设备类型分析， 业务访问量， 业务访问高峰情况等；<br>分析nginx日志得到网站的访问情况，如网站点击数， api请求总数、平均每秒请求数、峰值请求数，可以大体了解系统压力，作为系统扩容、性能及压力测试时的直接参考。</p>
+</li>
+<li><p>另类应用<br>用于社会工程学的用户画像；<br>函数堆栈调用分析；<br>网络流量分析</p>
+</li>
+</ul>
+<h1 id="ELK落地方案"><a href="#ELK落地方案" class="headerlink" title="ELK落地方案"></a>ELK落地方案</h1><h2 id="架构选型"><a href="#架构选型" class="headerlink" title="架构选型"></a>架构选型</h2><p>下面是一种常见的ELK架构</p>
+<p><img src="./_image/2016-09-05 16-53-12.png" alt=""><br>这个架构的优点是简单，维护起来也方便。 但是也有一些问题。 </p>
+<ul>
+<li>shipper耗主机资源。 直接用logstash当作日志采集的agent， 会比较重，会占用不少主机资源， 因此官方现在已经不推荐用logstash当shipper了， 推荐使用beat。 </li>
+<li>权限控制的问题。 kbana自身对页面访问权限控制这块是比较弱。 如果希望对页面的访问权限做控制， 可以考虑使用es search guard + ldap + nginx的方案来实现。 </li>
+<li>跨网络分区的问题 。如果有多个数据中心，且日志的流量比较大， 让日志跨网络分区进行传输，无疑会占用不少宝贵的专线带宽资源，会增加运营的成本，且有可能影响到其它应用的正常运行。 有一个解决此类问题的方案， 在各个网络分区各搭建一套ELK集群，日志不跨网络分区进行传输，  然后单独使用某些es节点作为tribe角色， 对搜索请求进行合并和路由。 </li>
+</ul>
+<p>为解决上面提到的问题， 设计了以下架构：</p>
+<p><img src="./_image/2016-08-30 23-23-42.png" alt=""></p>
+<p>当然， 上面的架构也不是一层不变。如果日志量更大，可以考虑使用hangout来代替logstash， 用kafka来替代redis， 从而获得更大的日志吞吐量。 </p>
+<h2 id="监控告警"><a href="#监控告警" class="headerlink" title="监控告警"></a>监控告警</h2><h3 id="日志的告警"><a href="#日志的告警" class="headerlink" title="日志的告警"></a>日志的告警</h3><p>可以采用elastalert。 当然也可以自己开发应用从es或者kafka取数据来做分析。 </p>
+<h3 id="自身的监控"><a href="#自身的监控" class="headerlink" title="自身的监控"></a>自身的监控</h3><ul>
+<li>使用zabbix 监控。 网上可以找到对应的模版。 </li>
+<li>使用官方提供的marvel方案， 不过是收费的。 </li>
+<li>使用open falcon监控。 我们内部有一套open falcon系统， 所以我们尝试用open falcon来监控es集群。 </li>
+</ul>
+<h1 id="挑战和思路"><a href="#挑战和思路" class="headerlink" title="挑战和思路"></a>挑战和思路</h1><h2 id="SaaS化"><a href="#SaaS化" class="headerlink" title="SaaS化"></a>SaaS化</h2><p>就是把ELK提供为SaaS服务，目前新浪云， 青云， aws等云平台上面已经有相应的服务了。 把日志分析系统SaaS化， 可以免去用户搭建和维护elk集群的麻烦，减少用户的使用成本，同时也可以给云平台自身带来更多的附加值。  </p>
+<h2 id="大数据分析"><a href="#大数据分析" class="headerlink" title="大数据分析"></a>大数据分析</h2><p>用ELK堆栈来存储和索引海量的日志数据， 后面再结合大数据分析和机器学习工具，可以做智能运维分析， 减少运维人员之苦。 </p>
+<h1 id="推荐资料"><a href="#推荐资料" class="headerlink" title="推荐资料"></a>推荐资料</h1><ul>
+<li>《Elasticsearch 权威指南》</li>
+<li>《ELK中文指南》</li>
+<li>《Mastering ElasticSearch》</li>
+<li>《Manning Elasticsearch in Action》</li>
+</ul>
+<p>如果需要一些ELK相关技术分享ppt， 电子书等，可以关注我们的公众号，在公众号里回复您的姓名，邮箱，注明elk， 进行获取。 我们将在三个工作日内将资料发送到您的邮箱。 </p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/08/27/浅谈日志分析系统ELK/" data-id="cisxd4fix000nbm3hnmg2judq" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/27/数据分析遐想/" class="pre">数据分析遐想</a><a href="/2016/08/25/Google_App_Engine_Incident_16008/" class="next">Google_App_Engine_Incident_16008</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/内网穿透/">内网穿透</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/06/kubernetes初探/">kubernetes初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">ELK不权威指南</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/25/Google_App_Engine_Incident_16008/">Google_App_Engine_Incident_16008</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title> | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Hackstoic's Blog</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title"></h1><div class="post-meta">Sep 6, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p><a href="http://geek.csdn.net/news/detail/95907" target="_blank" rel="external">Kubernetes、Swarm、Mesos最新版本功能比较</a> </p>
+<p><a href="http://www.infoq.com/cn/articles/kubernetes-and-cloud-native-applications-part01?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">《Kubernetes与云原生应用》系列之Kubernetes的系统架构与设计理念</a>  ＊＊＊＊＊</p>
+<p>Kubernetes是为生产环境而设计的容器调度管理系统，对于<strong>负载均衡、服务发现、高可用、滚动升级、自动伸缩</strong>等容器云平台的功能要求有原生支持。 </p>
+<p>一个K8s集群是由分布式存储（etcd）、服务节点（Minion，etcd现在称为Node）和控制节点（Master）构成的。所有的集群状态都保存在etcd中，Master节点上则运行集群的管理控制模块。Node节点是真正运行应用容器的主机节点，在每个Minion节点上都会运行一个Kubelet代理，控制该节点上的容器、镜像和存储卷等。</p>
+<p><img src="./_image/2016-09-06 23-43-12.jpg" alt=""><br>有状态服务集（PetSet）</p>
+<p><strong>K8s在1.3版本里发布了Alpha版的PetSet功能。</strong>在云原生应用的体系里，有下面两组近义词；第一组是无状态（stateless）、牲畜（cattle）、无名（nameless）、可丢弃（disposable）；第二组是有状态（stateful）、宠物（pet）、有名（having name）、不可丢弃（non-disposable）。RC和RS主要是控制提供无状态服务的，其所控制的Pod的名字是随机设置的，一个Pod出故障了就被丢弃掉，在另一个地方重启一个新的Pod，名字变了、名字和启动在哪儿都不重要，重要的只是Pod总数；而PetSet是用来控制有状态服务，PetSet中的每个Pod的名字都是事先确定的，不能更改。PetSet中Pod的名字的作用，并不是《千与千寻》的人性原因，而是关联与该Pod对应的状态。</p>
+<p>对于RC和RS中的Pod，一般不挂载存储或者挂载共享存储，保存的是所有Pod共享的状态，Pod像牲畜一样没有分别（这似乎也确实意味着失去了人性特征）；<strong>对于PetSet中的Pod，每个Pod挂载自己独立的存储，如果一个Pod出现故障，从其他节点启动一个同样名字的Pod，要挂在上原来Pod的存储继续以它的状态提供服务。</strong></p>
+<p>适合于PetSet的业务包括数据库服务MySQL和PostgreSQL，集群化管理服务Zookeeper、etcd等有状态服务。PetSet的另一种典型应用场景是作为一种比普通容器更稳定可靠的模拟虚拟机的机制。传统的虚拟机正是一种有状态的宠物，运维人员需要不断地维护它，容器刚开始流行时，我们用容器来模拟虚拟机使用，所有状态都保存在容器里，而这已被证明是非常不安全、不可靠的。使用PetSet，Pod仍然可以通过漂移到不同节点提供高可用，而存储也可以通过外挂的存储来提供高可靠性，PetSet做的只是将确定的Pod与确定的存储关联起来保证状态的连续性。PetSet还只在Alpha阶段，后面的设计如何演变，我们还要继续观察。</p>
+<p>联合集群服务（Federation）</p>
+<p><strong>K8s在1.3版本里发布了beta版的Federation功能。</strong>在云计算环境中，服务的作用距离范围从近到远一般可以有：同主机（Host，Node）、跨主机同可用区（Available Zone）、跨可用区同地区（Region）、跨地区同服务商（Cloud Service Provider）、跨云平台。K8s的设计定位是单一集群在同一个地域内，因为同一个地区的网络性能才能满足K8s的调度和计算存储连接要求。而联合集群服务就是为提供跨Region跨服务商K8s集群服务而设计的。</p>
+<p>每个K8s Federation有自己的分布式存储、API Server和Controller Manager。用户可以通过Federation的API Server注册该Federation的成员K8s Cluster。当用户通过Federation的API Server创建、更改API对象时，Federation API Server会在自己所有注册的子K8s Cluster都创建一份对应的API对象。在提供业务请求服务时，K8s Federation会先在自己的各个子Cluster之间做负载均衡，而对于发送到某个具体K8s Cluster的业务请求，会依照这个K8s Cluster独立提供服务时一样的调度模式去做K8s Cluster内部的负载均衡。而Cluster之间的负载均衡是通过域名服务的负载均衡来实现的。</p>
+<p>所有的设计都尽量不影响K8s Cluster现有的工作机制，这样对于每个子K8s集群来说，并不需要更外层的有一个K8s Federation，也就是意味着所有现有的K8s代码和机制不需要因为Federation功能有任何变化。</p>
+<p><a href="https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf" target="_blank" rel="external">容器设计模式</a></p>
+<p><a href="http://www.tuicool.com/articles/6R73qmn" target="_blank" rel="external">Kubernetes生产环境经验告诉你如何实现蓝绿部署和负载均衡</a><br>两级负载均衡配置<br><img src="./_image/2016-09-07 10-41-01.jpg" alt=""><br>配置负载均衡</p>
+<p>首先，我们需要一个区域去存储负载均衡器的配置，由于我们已经用了etcd，就决定存在这里。我们使用confd去监控etcd的配置变化，并基于模板生成新的HAProxy配置文件。当一个新的服务被添加到Kubernetes时，我们会向etcd添加一个新的配置，结果就是一个新的HAProxy配置文件。</p>
+<p>Kubernetes的蓝绿部署</p>
+<p>蓝绿部署是一种无宕机的升级技术，和滚动升级不同，蓝绿部署是启动一个运行着新版应用的副本的集群，旧版的应用依旧提供服务，直到新的应用真正启动并配置好负载均衡器。这种方式的一个好处是任何时候都只有一个版本的应用在运行，减少了处理多个并发版本带来的复杂性。当副本个数很少时，蓝绿部署也能很好地工作。</p>
+<p><img src="./_image/2016-09-07 10-42-34.jpg" alt=""><br>让部署自动化</p>
+<p>有了Deployer，就可以将部署集成到build流程中了。我们的build服务器可以在build成功后，push新的镜像到registry中，然后build服务器能调用Deployer自动将新版应用部署到测试环境中。同一个镜像也可以通过触发生产环境中的Deployer被推送上生产。</p>
+<p><img src="./_image/2016-09-07 10-43-20.jpg" alt=""></p>
+<p><a href="http://www.tuicool.com/articles/fMJJ32E" target="_blank" rel="external">Kubernetes容器集群中的日志系统集成实践</a></p>
+<p><img src="./_image/2016-09-07 10-51-17.jpg" alt=""></p>
+<p><a href="http://www.tuicool.com/articles/UzmiMz" target="_blank" rel="external">跨集群服务－实现kubernetes应用的高可用</a><br>我们在4个区分别创建了一个集群，并在一个可用区部署联邦控制平面 API ，我们将使用它管理服务。结构见下图：</p>
+<p><img src="./_image/2016-09-07 15-10-00.jpg" alt=""><br>后台Pods以及整集群的故障处理</p>
+<p>标准的Kubernetes服务集群IP能确保将不响应的Pod endpoint 自动从低延迟的服务中移除。</p>
+<p>类似的概念，Kubernetes集群联邦能够自动监控集群和联邦服务背后的kubernetes service endpoints，按需添加和移除服务分片。</p>
+<p>由于DNS缓存延迟（缓存超时，联邦服务DNS的TTL默认是 3分钟，但可以调整），灾难性故障的情况下， 让所有客户端故障切换到到另一个集群可能需要很长时间。然而，鉴于每个区域的Kubernetes Service endpoint 均有多个IP（例如以上的 us-central1有三个），只要进行适当的配置，很多客户端都能够在很短时间内切换到其中一个替代的IP.</p>
+<p><a href="http://www.tuicool.com/articles/FRBF3ia" target="_blank" rel="external">趋势科技基于Docker和Kubernetes的持续部署实践</a><br>InfoQ：在采用Kubernetes技术过程中，可否简单讲讲你们遇到的最大的坑？有什么经验可以分享？</p>
+<p>孙青：<strong>其实最大的问题主要还是网络</strong>，趋势科技的网络是基于Flannel做的。在使用后不久就遇到了FLannel出问题，导致Node之间的Vxlan不通。当时查这个问题查了很久，后面找到原因看到是因为Flannel在bond网络下的OOM导致的。好在Flannel修复的比较及时，并没有对我们的业务造成太大影响。但是Flannel的最新发布还是15年11月，所以猜测其开发进度没有预期的理想。因为我们对网络方面的要求并不高，所以到目前为止没有发现其他重大问题。</p>
+<p>因为Kubernetes到目前为止被大家诟病最多的还是它的网络解决方案以及网络抽象。 <strong>对于网络要求较高的服务我建议要多调研，多做一些性能测试 </strong>。我个人的观点是：<strong>如果业务对网络的要求极高，就不推荐用原生的Kubernetes。如果要用，网络架构不推荐使用Flannel</strong>，可以做其他的选择；此外，需要对kube-proxy进行一些改造。</p>
+<p><a href="http://www.tuicool.com/articles/n6Jbiez" target="_blank" rel="external">对话李春龙：如何用Kubernetes管理有状态服务</a></p>
+<p><a href="http://www.tuicool.com/articles/Fveyquv" target="_blank" rel="external">容器技术漫谈（3）-Kubernetes</a><br>系统架构</p>
+<p><img src="./_image/2016-09-07 15-28-04.png" alt=""><br>图中可以看到，一个完整的Kubernetes集群可分为两部分，控制中心和若干节点。</p>
+<p>节点</p>
+<p>一般一个节点是一个单独的物理机或虚拟机，其上安装了Docker来负责镜像下载和运行。</p>
+<p>除了Docker，每个节点还运行着一个kubelet程序，kubelet程序负责管理pods以及其依赖的volume，镜像以及容器。</p>
+<p>节点上还运行这kube-proxy程序，实现的就是上述的service组件的功能，可以实现tcp和upd转发和负载均衡。</p>
+<p>控制中心</p>
+<p>控制中心负责节点的管理和调度工作。由以下几个组件组成：</p>
+<p>etcd：etcd负责配置信息的存储，利用etd的watch功能，能够及时发现集群的状态变化<br>api server：主要负责提供rest接口并将对集群的状态操作写入etcd供其他模块执行。<br>scheduler：通过api对pod进行调度<br>controller manager：包含若干的控制组件，实现上述的 replication controller 等功能。</p>
+<p><a href="http://www.tuicool.com/articles/ri2umeJ" target="_blank" rel="external">kubernetes 结构介绍</a><br>kubernetes （经常被缩写成 k8s）是 google 开源的一套自动化容器管理平台，前身是 Borg，用于容器的部署、自动化调度和集群管理。目前 kubernetes 有以下的特性：</p>
+<ul>
+<li>容器的自动化部署</li>
+<li>自动化扩展或者缩容</li>
+<li>自动化应用/服务升级</li>
+<li>容器成组，对外提供服务，支持负载均衡</li>
+<li>服务的健康检查，自动重启</li>
+</ul>
+<p><img src="./_image/2016-09-07 15-39-25.png" alt=""></p>
+<p><a href="http://www.tuicool.com/articles/Zv2Ez26" target="_blank" rel="external">Kubernetes高级实践：Master高可用方案设计和踩过的那些坑</a><br>第一，除了kubelet之外，Kubernetes所有组件容器化；</p>
+<p>第二，通过haproxy和keepalived构建Loadbalancer实现Master的高可用。<br>Master High Availability Kubernetes整体架构图</p>
+<p><img src="./_image/2016-09-07 15-55-40.jpg" alt=""></p>
+<p>从架构图中我们可以看到：</p>
+<p>1） Upstart保证docker服务和kubelet服务的高可用，而Kubernetes的其他组件将以static pod的方式由kubelet保证高可用。</p>
+<p>2） 两台lb节点通过haproxy和keepalived构建出一个External Loadbalancer，并提供VIP供客户端访问。</p>
+<p>3） Haproxy配置成“SSL Termination”方式，外网client通过HTTPS请求访问集群，而内网client则可以通过HTTPS/HTTP请求访问。</p>
+<p>4） Kubernetes高可用集群通过flannel static pod构建一个Overlay网络，使集群中的docker容器能够通过Kubernetes Cluster IP进行通信。</p>
+<p><a href="https://segmentfault.com/a/1190000002978115" target="_blank" rel="external">基于kubernetes的docker集群实践</a></p>
+<p><img src="./_image/2016-09-07 16-16-48.jpg" alt=""><br>其中分为分为这几个块：</p>
+<p>APPBuilder： 应用构建模块，负责将app打包成dockerimage，并入image版本库；<br>container： 容器运行，docker容器实际运行的地方；<br>thirdPart： 应用依赖的第三方资源，如redis、mysql等；<br>scheduler： 调度系统，核心部分，负责各个子模块的智能调度；<br>router： 基于7层的请求分发，根据url将请求分发到对应的app容器；<br>nats： 基于4层的负载均衡，，将流量负载均衡到router集群；<br>healthManage： 健康检查系统，包括了对router rules、容器状态、物理机状态等各个子模块健康的检查，并做相应补救action；<br>log模块： 统一处理app所产生的日志；</p>
+<p><a href="http://www.tuicool.com/articles/fuaQFvu" target="_blank" rel="external">闺女也能看懂的插画版Kubernetes指南</a></p>
+<p><a href="http://dockone.io/article/932" target="_blank" rel="external">十分钟带你理解Kubernetes核心概念</a><br>集群</p>
+<p><img src="./_image/2016-09-07 17-01-51.png" alt=""><br>上图可以看到如下组件，使用特别的图标表示Service和Label：<br>Pod<br>Container（容器）<br>Label(label)（标签）<br>Replication Controller（复制控制器）<br>Service（enter image description here）（服务）<br>Node（节点）<br>Kubernetes Master（Kubernetes主节点）</p>
+<p>Service</p>
+<p>如果Pods是短暂的，那么重启时IP地址可能会改变，怎么才能从前端容器正确可靠地指向后台容器呢？</p>
+<p>Service是定义一系列Pod以及访问这些Pod的策略的一层抽象。Service通过Label找到Pod组。因为Service是抽象的，所以在图表里通常看不到它们的存在，这也就让这一概念更难以理解。</p>
+<p>现在，假定有2个后台Pod，并且定义后台Service的名称为‘backend-service’，lable选择器为（tier=backend, app=myapp）。backend-service 的<strong>Service会完成如下两件重要的事情</strong>：<br>会为Service创建一个本地集群的DNS入口，因此前端Pod只需要DNS查找主机名为 ‘backend-service’，就能够解析出前端应用程序可用的IP地址。<br>现在前端已经得到了后台服务的IP地址，但是它应该访问2个后台Pod的哪一个呢？Service在这2个后台Pod之间提供透明的负载均衡，会将请求分发给其中的任意一个（如下面的动画所示）。通过每个Node上运行的代理（kube-proxy）完成。这里有更多技术细节。</p>
+<p>下述动画展示了Service的功能。注意该图作了很多简化。如果不进入网络配置，那么达到透明的负载均衡目标所涉及的底层网络和路由相对先进。如果有兴趣，这里有更深入的介绍。</p>
+<p><a href="http://dockone.io/article/1345" target="_blank" rel="external">监控工具Prometheus加入到Kubernetes平台</a></p>
+<p><img src="./_image/2016-09-07 20-50-11.jpg" alt=""><br><a href="http://dockone.io/article/1260" target="_blank" rel="external">Kubernetes基本要素介绍</a><br>kubectl</p>
+<p>kubectl实用程序可以与Kubernetes集群管理器交互。例如，您可以添加和删除节点，Pod，复制控制器和服务。你也可以检查它们的状态，等等。</p>
+<p>下图展示了nginxsvc如何工作的：</p>
+<p><img src="./_image/2016-09-07 21-28-08.png" alt=""></p>
+<p>正如你所看到的，进入HTTP端口80的请求在到达nginxsvc服务后被代理到<strong>三个nginx的Pod中的一个上。</strong></p>
+<p>欲了解更多关于服务的内容，请参阅文档。</p>
+<p><a href="http://dockone.io/article/1195" target="_blank" rel="external">搜狐基于Docker+Kubernetes的一站式运维管理实践</a><br>该系统是一个持续交付和自动运维平台，解决用户从代码自动编译打包，到线上运行维护的全套需求，采用私有云模式，实现了用户私有集群的容器化管理和资源智能分配。<br>整体架构</p>
+<p><img src="./_image/2016-09-07 21-36-24.jpg" alt=""><br>DomeOS Server是整个系统的控制模块，前端和所有逻辑控制均在这部分实现。</p>
+<p>MySQL用来存储项目、部署、用户、监控等数据信息。</p>
+<p>Server可以关联到代码仓库，目前支持GitLab和SVN。<br>Registry是Docker提供的开源私有仓库，我们对它进行了改造，可以对接到搜狐云台的存储系统，保证了镜像的安全性和可靠性。</p>
+<p>资源分配、任务调度部分交给Kubernetes来完成。</p>
+<p>监控部分融合了open-falcon和cAdvisor，实现了主机和容器多个维度信息的收集展示。</p>
+<p>另外，为了方便研发及运维同学在部署过程中快速定位问题，加入了WebSSH模块，能够通过网页直接进入到容器内部查看信息。DomeOS支持LDAP登录，方便企业用户使用。<br>功能模块</p>
+<p>DomeOS提供了项目管理、持续集成、部署管理、镜像管理、集群管理、应用商店、用户和组管理以及多层级监控服务。以下是功能模块图：</p>
+<p><img src="./_image/2016-09-07 21-39-34.jpg" alt=""></p>
+<p>其中项目管理、集群管理和部署是比较重要的功能。</p>
+<p>项目管理中包含了持续集成，设计方案如下：</p>
+<p><img src="./_image/2016-09-07 21-41-14.png" alt=""></p>
+<p>用户在代码仓库的操作，通过Webhooks将操作信息发送给DomeOS Server，Server根据项目关联配置信息确认是否满足构建任务的出发条件，如果满足，Domeos Server下发构建任务给Kubernetes Master，master挑选符合条件的slave启动构建镜像，该镜像从代码仓库中下载代码，根据对应的Dockerfile执行构建，构建生成的镜像被push到代码仓库中，然后反馈构建日志及结果给DomeOS Server，Server在仓库中确认过镜像信息后，将构建结果写入到数据库中。<br>集群管理部分，我们将一套Kubernetes部署作为一套集群，添加集群是配置Kubernetes Master信息的过程，用户可以在DomeOS中添加多套集群。</p>
+<p><img src="./_image/2016-09-07 21-48-11.jpg" alt=""><br>部署管理部分</p>
+<p>部署启动在一个集群上，采用Kubernetes Pod的概念，每个部署都从一个或多个镜像创建，可以对每个镜像配置CPU和内存限制，可以在Pod中配置一个或多个日志收集模块，该部分用Flume实现，日志收集到kafka中。网络部分目前支持overlay和host两种模式，overlay模式的负载均衡用Kubernetes的Service实现，host模式的负载均衡通过Confd+Nginx来实现。同一套集群的部署之间可以通过内网域名互相访问，这部分通过skyDNS和kube2sky来实现。</p>
+<p><a href="http://dockone.io/article/1166" target="_blank" rel="external">“Satellite”：在生产过程中监控Kubernetes</a></p>
+<p>可能产生的问题：<br>主机之间没有联系<br>etcd宕机或者不稳定／错误配置导致滞后<br>主机间的覆盖网络层损坏<br>单个节点中的任意一个都会宕机<br>Kubernetes API服务器或者控制器管理者宕机<br>Docker无法启动容器<br>网络分割会影响节点子集</p>
+<p>以我们已有的Kubernetes知识，我们坚信我们可以使用冒烟测试用以下特点来创建一个监视系统：</p>
+<p>轻量级定期测试<br>高可用性和弹性网络分区<br>零故障操作环境<br>时间序列作为健康数据的历史</p>
+<p><img src="./_image/2016-09-07 22-15-27.jpg" alt=""></p>
+<p><img src="./_image/2016-09-07 22-14-22.jpg" alt=""><br>由于它的简易，目前的模型就有了一定的限制。它在更小一些的集群（比如8个节点）能够很好地运行，然而，在一个再大一点的集群，你就不想每个节点都可以互相交流了。这个解决方式就是我们计划采取的方案是创建一个特殊的聚合器，从Skype的超级节点那里或者是从Consul的“anti－entropy catelogs上面借鉴一些想法。<br>英文原文地址： <a href="http://blog.gravitational.com/satellite-monitoring-kubernetes-in-production/" target="_blank" rel="external">http://blog.gravitational.com/satellite-monitoring-kubernetes-in-production/</a></p>
+<p>监测Kubernetes集群的状态不是直接使用传统监测工具就可以了的。手动故障排除有一定的复杂性，在集群里有一个自动反馈循环的话，就可以消除很大部分的复杂性。Satellite项目已经证明当操作集群的时候对我们是有用的，所以我们决定对它进行开源，希望它可以成为一个帮助提升kubernetes发现错误系统。 </p>
+<p><a href="http://dockone.io/article/1577" target="_blank" rel="external">使用Kubernets Pet Set部署上千个Cassandra实例</a></p>
+<p>Pet Sets提供了如下功能：<br>在DNS中具有固定的hostname，同一个Pet Set中的Pet hostname以Pet Set名称为基础，加上从0开始的顺序化数字，例如cassandra-0。<br>顺序化索引，例如0、1、2、3。<br>链接到Pet序列以及hostname的固定存储。<br>通过DNS发现同伴，在Pet创建之前，同伴的名称是已知的。<br>顺序启动与销毁Pet，通过Pet编号，下一个需要被创建的Pet是已知的，并且当Pet Set规模减小时，哪些Pet需要被销毁也是已知的。当缩减集群规模时，对于从一个Pet中抽取数据这类管理任务来说，该功能是非常有用的。</p>
+<p>使用Pet Set的应用程序示例：<br>集群化软件，例如Cassandra、Zookeeper、etcd或者需要固有关系的弹性化软件。<br>数据库软件，例如MySQL或者PostgreSQL，这种需要单一实例在任何时候都挂上一个持久化volume。</p>
+<p>只有当你的应用程序需要如上所述的一些属性时才建议使用Pet Set，因为管理无状态的pod要更加容易</p>
+<p><strong>1.3版本中Pet Sets的局限性</strong></p>
+<ul>
+<li>Pet Set是具有α属性的资源，1.3版本以前的Kubernetes都不能使用。</li>
+<li>Pet所使用的存储必须是通过基于请求获取存储的动态存储供应器提供（dynamic storage provisioner）或者是通过管理员事先提供。</li>
+<li>删除Pet Set并不会删除任何的Pet或者Pet的存储。你必须手动删除Pet及其存储。</li>
+<li>目前，所有的Pet Set都需要一个“管理服务（governing service）”，或者是一个可以管理Pet网络标识的服务。这个服务由使用者自己负责。</li>
+<li>目前，更新已有的Pet Set需要手动操作。你可以重新构建一个使用新版镜像的Pet Set，或者一个一个地替换已有Pet的镜像，然后重新把它加入到集群中。</li>
+</ul>
+<p><a href="http://blog.csdn.net/anzhsoft/article/details/51282254" target="_blank" rel="external">使用Kubernetes需要注意的一些问题（FAQ of k8s)</a><br>本篇文章并不是介绍K8S 或者Docker的，而仅仅是使用过程中一些常见问题的汇总。</p>
+<ul>
+<li>重启策略：<a href="http://kubernetes.io/docs/user-guide/pod-states/，" target="_blank" rel="external">http://kubernetes.io/docs/user-guide/pod-states/，</a> 对于一个服务，默认的设置是RestartAlways，而其他的比如Job，重启策略则是Never or OnFailure，</li>
+<li>如果docker重启，kubelet也要重启，否则pod的状态会变成Completed</li>
+<li>如果报错是报image找不到，可能是因为与docker registry的认证关系没有建立，可以通过docker login 来解决</li>
+<li>需要pause，可以docker tag修改源。</li>
+<li>需要升级内核至少3.10版本，只能使用root</li>
+<li>使用Nginx，尤其是对外网服务的时候可能会很管用。</li>
+<li>使用kubectl scale 进行服务副本数的管理，同时也可以设置自动化扩容缩容机制</li>
+<li>rolling-update 进行在线升级</li>
+<li>集群的HA需要关注，毕竟master挂了是个很麻烦的事情，组起码保证不了服务的可靠性</li>
+<li>如果指定机房：可以使用label机制。每个逻辑机房部署一整套环境OR所有逻辑机房使用一整套环境</li>
+<li>Docker的升级实际上会kill机器上所有的服务实例，因此kubernetes的解决：让该节点处于维护状态<br> cordon Mark node as unschedulable<br>drain Drain node in preparation for maintenance<br>uncordon Mark node as schedulable</li>
+<li>kubelet 打印了很多错误日志（ERROR），需要研究一下错误日志的含义。有必要对于FATAL日志进行监控进行报警，避免出现错误而不知道。</li>
+<li>容错性测试，迁移一个pod到某个节点上，如果超时未部署好，会自动迁移到其他机器上</li>
+<li>权限管理算是比较完善，但是需要额外的配置</li>
+<li>kubectl label no hostname role=master ，可以设置多个label，并且相同的key可以有不同的</li>
+<li><a href="http://kubernetes.io/docs/api-reference/v1/definitions/，" target="_blank" rel="external">http://kubernetes.io/docs/api-reference/v1/definitions/，</a> 看各种格式， kc scale rc sofacloud2-controller –replicas=20</li>
+<li>docker要注意WORKDIR，否则会导致运行时错误</li>
+<li>kubernetes dashboard 要部署到master节点，保证该节点不会被使用上。</li>
+<li>自动的rebalance， 比如几个节点突然下线后，pod迁移到其他的节点，那么在节点上线后，会不会将pod迁移到其他的可用的节点上去。</li>
+<li>配置dns的过程中，由于healthz没有建立，但是有liveness的监控，导致一个contianer直接killed。</li>
+<li>如果服务需要访问其他节点非K8S管理的服务，最简单的方法是设置hotNetwork: true, 当然更好的方式是设置dns</li>
+<li>搭建了kube-dashboard后，可以在web端创建和管理服务。</li>
+</ul>
+<p><a href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1473267043&amp;ver=1&amp;signature=hnfE5gSqelOHkKBJrHwnWQ-Xmh0l94N5-9pK-dJXorPaPE3Nk2GDd36TWE231*8uU4eV3gIMOaMsObIQ90mulH1ivFo-wuRgF*ahYbkZd2qRmYORo9qAPXmZCEnqH3J99ie7OOadEE9rgRYkI*LjzQ==" target="_blank" rel="external">Kubernetes系统常见运维技巧</a><br>Kubernetes集群高可用方案</p>
+<p>Kubernetes作为容器应用的管理中心，通过对Pod的数量进行监控，并且根据主机或容器失效的状态将新的Pod调度到其他Node上，实现了应用层的高可用性。针对Kubernetes集群，高可用性还应包含以下两个层面的考虑：etcd数据存储的高可用性和Kubernetes Master组件的高可用性。 </p>
+<p>1．etcd高可用性方案 </p>
+<p>etcd在整个Kubernetes集群中处于中心数据库的地位，为保证Kubernetes集群的高可用性，首先需要保证数据库不是单故障点。一方面，etcd需要以集群的方式进行部署，以实现etcd数据存储的冗余、备份与高可用性；另一方面，etcd存储的数据本身也应考虑使用可靠的存储设备。 </p>
+<p>etcd集群的部署可以使用静态配置，也可以通过etcd提供的REST API在运行时动态添加、修改或删除集群中的成员。本节将对etcd集群的静态配置进行说明。关于动态修改的操作方法请参考etcd官方文档的说明。 </p>
+<p>首先，规划一个至少3台服务器（节点）的etcd集群，在每台服务器上安装好etcd。 </p>
+<p>部署一个由3台服务器组成的etcd集群，其配置如表1所示，其集群部署实例如图2所示。 </p>
+<p><img src="./_image/2016-09-08 01-00-19.jpg" alt=""></p>
+<p>表1 etcd集群的配置</p>
+<p><img src="./_image/2016-09-08 01-00-08.jpg" alt=""></p>
+<p>图2 etcd集群部署实例</p>
+<p> [member]ETCD_NAME=etcd1            #etcd实例名称ETCD_DATA_DIR=＂/var/lib/etcd/etcd1＂   #etcd数据保存目录ETCD_LISTEN_PEER_URLS=＂<a href="http://10.0.0.1:2380＂" target="_blank" rel="external">http://10.0.0.1:2380＂</a>   #集群内部通信使用的URLETCD_LISTEN_CLIENT_URLS=＂<a href="http://10.0.0.1:2379＂" target="_blank" rel="external">http://10.0.0.1:2379＂</a>   #供外部客户端使用的URL……#[cluster]ETCD_INITIAL_ADVERTISE_PEER_URLS=＂<a href="http://10.0.0.1:2380＂" target="_blank" rel="external">http://10.0.0.1:2380＂</a>   #广播给集群内其他成员使用的URLETCD_INITIAL_CLUSTER=＂etcd1=<a href="http://10.0.0.1:2380,etcd2=http://10.0.0.2:2380" target="_blank" rel="external">http://10.0.0.1:2380,etcd2=http://10.0.0.2:2380</a>, etcd3=<a href="http://10.0.0.3:2380＂" target="_blank" rel="external">http://10.0.0.3:2380＂</a>     #初始集群成员列表ETCD_INITIAL_CLUSTER_STATE=＂new＂     #初始集群状态，new为新建集群ETCD_INITIAL_CLUSTER_TOKEN=＂etcd-cluster＂   #集群名称ETCD_ADVERTISE_CLIENT_URLS=＂<a href="http://10.0.0.1:2379＂" target="_blank" rel="external">http://10.0.0.1:2379＂</a>   #广播给外部客户端使用的URL</p>
+<p>启动etcd1服务器上的etcd服务：</p>
+<p>$ systemctl restart etcd</p>
+<p>启动完成后，就创建了一个名为etcd-cluster的集群。 </p>
+<p>etcd2和etcd3为加入etcd-cluster集群的实例，需要将其ETCD_INITIAL_CLUSTER_STATE设置为“exist”。etcd2的完整配置如下（etcd3的配置略）：</p>
+<p>[member]ETCD_NAME=etcd2            #etcd实例名称ETCD_DATA_DIR=＂/var/lib/etcd/etcd2＂   etcd数据保存目录ETCD_LISTEN_PEER_URLS=＂<a href="http://10.0.0.2:2380＂" target="_blank" rel="external">http://10.0.0.2:2380＂</a>   #集群内部通信使用的URLETCD_LISTEN_CLIENT_URLS=＂<a href="http://10.0.0.2:2379＂" target="_blank" rel="external">http://10.0.0.2:2379＂</a>   #供外部客户端使用的URL……[cluster]ETCD_INITIAL_ADVERTISE_PEER_URLS=＂<a href="http://10.0.0.2:2380＂" target="_blank" rel="external">http://10.0.0.2:2380＂</a>   #广播给集群内其他成员使用的URLETCD_INITIAL_CLUSTER=＂etcd1=<a href="http://10.0.0.1:2380,etcd2=http://10.0.0.2:2380,etcd3=http://10.0.0.3:2380＂" target="_blank" rel="external">http://10.0.0.1:2380,etcd2=http://10.0.0.2:2380,etcd3=http://10.0.0.3:2380＂</a>     #初始集群成员列表ETCD_INITIAL_CLUSTER_STATE=＂exist＂       # existing表示加入已存在的集群ETCD_INITIAL_CLUSTER_TOKEN=＂etcd-cluster＂   #集群名称ETCD_ADVERTISE_CLIENT_URLS=＂<a href="http://10.0.0.2:2379＂" target="_blank" rel="external">http://10.0.0.2:2379＂</a>   #广播给外部客户端使用的URL</p>
+<p>启动etcd2和etcd3服务器上的etcd服务：</p>
+<p>$ systemctl restart etcd</p>
+<p>启动完成后，在任意etcd节点执行etcdctl cluster-health命令来查询集群的运行状态：</p>
+<p>$ etcdctl cluster-healthcluster is healthy<br>member ce2a822cea30bfca is healthy<br>member acda82ba1cf790fc is healthy<br>member eba209cd0012cd2 is healthy</p>
+<p>在任意etcd节点上执行etcdctl member list命令来查询集群的成员列表：</p>
+<p>$ etcdctl member list<br>ce2a822cea30bfca: name=default peerURLs=<a href="http://10.0.0.1:2380,http://10.0.0.1" target="_blank" rel="external">http://10.0.0.1:2380,http://10.0.0.1</a>: 7001 clientURLs=<a href="http://10.0.0.1:2379,http://10.0.0.1:4001acda82ba1cf790fc" target="_blank" rel="external">http://10.0.0.1:2379,http://10.0.0.1:4001acda82ba1cf790fc</a>: name=default peerURLs=<a href="http://10.0.0.2:2380,http://10.0.0.2" target="_blank" rel="external">http://10.0.0.2:2380,http://10.0.0.2</a>: 7001 clientURLs=<a href="http://10.0.0.2:2379,http://10.0.0.2:4001eba209cd40012cd2" target="_blank" rel="external">http://10.0.0.2:2379,http://10.0.0.2:4001eba209cd40012cd2</a>: name=default peerURLs=<a href="http://10.0.0.3:2380,http://10.0.0.3" target="_blank" rel="external">http://10.0.0.3:2380,http://10.0.0.3</a>: 7001 clientURLs=<a href="http://10.0.0.3:2379,http://10.0.0.3:4001" target="_blank" rel="external">http://10.0.0.3:2379,http://10.0.0.3:4001</a><br>至此，一个etcd集群就创建成功了。 </p>
+<p>以kube-apiserver为例，将访问etcd集群的参数设置为：</p>
+<p>–etcd-servers=<a href="http://10.0.0.1:4001,http://10.0.0.2:4001,http://10.0.0.3:4001" target="_blank" rel="external">http://10.0.0.1:4001,http://10.0.0.2:4001,http://10.0.0.3:4001</a></p>
+<p>在etcd集群成功启动之后，如果需要对集群成员进行修改，则请参考官方文档的详细说明：点击此处 </p>
+<p>对于etcd中需要保存的数据的可靠性，可以考虑使用RAID磁盘阵列、高性能存储设备、NFS网络文件系统，或者使用云服务商提供的网盘系统等来实现。 </p>
+<p>2.Kubernetes Master组件的高可用性方案 </p>
+<p>在Kubernetes体系中，Master服务扮演着总控中心的角色，主要的三个服务kube-apiserver、kube-controller-mansger和kube-scheduler通过不断与工作节点上的Kubelet和kube-proxy进行通信来维护整个集群的健康工作状态。如果Master的服务无法访问到某个Node，则会将该Node标记为不可用，不再向其调度新建的Pod。但对Master自身则需要进行额外的监控，使Master不成为集群的单故障点，所以对Master服务也需要进行高可用方式的部署。 </p>
+<p>以Master的kube-apiserver、kube-controller-mansger和kube-scheduler三个服务作为一个部署单元，类似于etcd集群的典型部署配置。使用至少三台服务器安装Master服务，并且使用Active-Standby-Standby模式，保证任何时候总有一套Master能够正常工作。 </p>
+<p>所有工作节点上的Kubelet和kube-proxy服务则需要访问Master集群的统一访问入口地址，例如可以使用pacemaker等工具来实现。图3展示了一种典型的部署方式。 </p>
+<p><img src="./_image/2016-09-08 00-59-28.jpg" alt=""></p>
+<p>图3 Kubernetes Master高可用部署架构</p>
+<p><a href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1473267083&amp;ver=1&amp;signature=OatXtRvD9i*enjvx5hjUzvcmO1eAHWhHM8Jl9jKCv-vGVHzW*Yl1pEji4Y1zgOEJZxqF-eZ9EeKo1vnOz2txzTO5L58nfYC9gEvaIEzDuMddTwolBCpLaTCKWDS1t5pgyNxrYG78qpTwetdJZE3WalehqdVO9433u-l4A-HQrIg=" target="_blank" rel="external">中国移动Kubernetes多集群统一管理实践</a><br>涉及以下内容：<br>多集群管理整体技术方案<br>在同一数据中心的多个项目共享资源统一管理<br>在同一数据中心对含有多个网络域项目的统一管理<br>跨IP承载网的多数据中心统一管理<br>多集群管理中的重点和难点<br>安全集中控制<br>资源统一纳管<br>镜像统一管理<br>应用统一部署<br>配置统一管理<br>统一监控<br>应用效果<br>下一步计划</p>
+<p><a href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1473267136&amp;ver=1&amp;signature=4olKSipUP3ysjTJnJPgkfFH7b*bhsfxVRCTsRoypeKyP6iv-NLO8ZGv7GQv4vYmiLdyoxh1T08sHs03B8EDaqoz8KH6dVw46bsPH9CFWAgZrhDfj3colGXwWoRubIVgAksvVK0QUuC6etjTt-E5qRGkYm5zxwksfridilKqrEr0=" target="_blank" rel="external">Sextant一小步，Kubernetes一大步！</a></p>
+<p>开源的Kubernetes“发行版”Sextant——实现几乎零操作的全自动安装和部署Kubernetes集群</p>
+<p>k8s优点：<br>Kubernetes能够提升集群利用率<br>Kubernetes能够提升团队工作效率</p>
+<p>痛点：<br>在技术研发工作中碰到的最大痛点是：Kubernetes集群的安装需要大量繁琐的手工操作。而且因为Kubernetes和相关技术在高速演进，很多手工操作需要重复执行。此外，手工操作数十台甚至数百台服务器很容易出错。</p>
+<p>首先，Ansible等工具不能重装服务器操作系统，而Kubernetes集群的单机操作系统不宜再用CentOS等常见Linux发行版本，而是适合使用CoreOS。</p>
+<p>为了将这种变化限定于数据中心里的一部分服务器，Sextant可以利用VLAN等隔离措施。因为Kubernetes是以容器的形式运行的，而<strong>每当Kubernetes升级时，Sextant将升级版本的容器镜像放到bootstrapper服务器上，集群即可自动升级Kubernetes</strong>。每当CoreOS升级的时候，Sextant也将新版本放到bootstrapper服务器上，CoreOS会自动升级和重启，并且保证每次同时重启的机器数量是集群总数的一个极小的比例，不影响不中断Kubernetes调度的分布式作业。<br>开源项目地址： <a href="https://github.com/k8sp/sextant" target="_blank" rel="external">https://github.com/k8sp/sextant</a>  </p>
+<p><a href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1473267136&amp;ver=1&amp;signature=kbLojrtJp4sfG*s1D9NygesetfogBkNl0F50Ura9CNOiZVuLYV-UNMK*CnMm0sGfSlZU5Qxu8A*KbsDZV0emdXPZk0Rgpjh39pkMqrJN8cWwki8ZCZkyJ0mvp7zbjz*U9IZgE4zu46TzcG77Mph6cQ==" target="_blank" rel="external">使用Kubernetes 1.2.0的正确姿势</a></p>
+<p>Part I 升级注意事项<br>Part II Kubernetes中现存的问题<br>Part III Docker中现存的问题（v1.9.1）</p>
+<p><a href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1473267170&amp;ver=1&amp;signature=PKi78rifAcWNCn5gsYgNsqDUPN7nOrCadA5MO7alA6SA7kEwIVutnjiIr0NHS6N4fqVQuu-uMfKE3RAjqN4NsrGO0BGsWU5NFCFgXxPzg3E4mUkInU-ldZrvDKgykboG2MH3x5NTGThhTEAR1Ku-dQ==" target="_blank" rel="external">Kubernetes NODE维护模式</a></p>
+<p><a href="http://my.oschina.net/fufangchun/blog/727795" target="_blank" rel="external">Kubernetes 1.3版本之简单安装</a></p>
+<p><a href="http://www.stuq.org/course/detail/1049" target="_blank" rel="external">Stuq课程－从理论到生产环境实战：掌握Docker大规模部署和管理</a></p>
+<p><a href="http://kubernetes.io/docs/" target="_blank" rel="external">kubernetes官方指南</a></p>
+<p>关于node的部署：</p>
+<ul>
+<li>node节点的机器可以使用vm或者物理机</li>
+<li>官方的指南推荐node跑在 x86_64的linux上， 但不代表其它os不能运行</li>
+<li>apiserver和etcd可以部署在一台机器上， 1核1g的机器可以支撑10多个节点。 如果需要支持更多的机器， 需要更多的核数</li>
+<li>其它node可以有任意的cpu核数和内存</li>
+</ul>
+<p>关于网络</p>
+<ul>
+<li>自己配置路由到pod ip</li>
+<li>或者可以选择overlay网络，如flannel， weave， ovs</li>
+<li>给pod ip分配cidr， 如果你每个node想最大支持30台pod， 选择 ／27 </li>
+<li>为cluster分配ip， 如果你想支持256个node ， 选择／24</li>
+<li>k8s也会给service分配ip， 但是service的ip不需要route， 因为kube－proxy组件会自动处理route问题。 给service ip分配足够大的ip 段， 如10.0.0.0/16， 支持65534个ip。 因为如果你后面再去扩展service的ip段的话， 会影响到已经在使用的nodes和services。 </li>
+<li>需要开启防火墙允许node访问api server 的80或者443端口</li>
+<li>需要开启ipv4 转发， sysctl。   net.ipv4.ip_forward ＝ 1</li>
+</ul>
+<p>关于系统软件包<br>You will need binaries for:</p>
+<ul>
+<li>etcd</li>
+<li>A container runner, one of:<ul>
+<li>docker</li>
+<li>rkt</li>
+</ul>
+</li>
+<li>Kubernetes<pre><code>- kubelet
+</code></pre><ul>
+<li>kube-proxy<ul>
+<li>kube-apiserver</li>
+<li>kube-controller-manager</li>
+<li>kube-scheduler</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>官方建议： docker， kubelet， kube－proxy可以在容器外部，但是etcd， apiserver， controller manager， scheduler组件建议运行在容器中， 官方的release版本包含了除etcd外各组件的docker 镜像。 在kubernetes／server目录下</p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/09/06/kubernetes初探/" data-id="cisxd4fhn000abm3haxlgpz33" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/09/10/内网穿透/" class="pre"></a><a href="/2016/08/28/0gopher meetup 深圳站2016-08-28/" class="next">gopher meetup 深圳站2016-08-28</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/内网穿透/">内网穿透</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/06/kubernetes初探/">kubernetes初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">ELK不权威指南</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/25/Google_App_Engine_Incident_16008/">Google_App_Engine_Incident_16008</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
