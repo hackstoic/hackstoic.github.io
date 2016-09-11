@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title> | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Hackstoic's Blog</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title"></h1><div class="post-meta">Sep 11, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="renderer" content="webkit">
+    <title>ELK不权威指南</title>
+    <link rel="stylesheet" href="data:text/css;base64,CiAgICA6Oi13ZWJraXQtc2Nyb2xsYmFyIHsKICAgICAgICB3aWR0aDo4cHg7CiAgICAgICAgbWFyZ2luOjAgMXB4OwogICAgICAgIGJhY2tncm91bmQ6ICNmZGZkZmQ7CiAgICB9CiAgICA6Oi13ZWJraXQtc2Nyb2xsYmFyOmhvcml6b250YWx7CiAgICAgICAgaGVpZ2h0OiA4cHg7CiAgICB9CgogICAgOjotd2Via2l0LXNjcm9sbGJhci1idXR0b257CiAgICAgICAgaGVpZ2h0OiAwOwogICAgfQoKICAgIDo6LXdlYmtpdC1zY3JvbGxiYXItdHJhY2sgewogICAgICAgIGJvcmRlci1yYWRpdXM6IDRweDsKICAgIH0KICAgIDo6LXdlYmtpdC1zY3JvbGxiYXItdHJhY2stcGllY2UgewogICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNmZGZkZmQ7CiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4OwogICAgfQogICAgOjotd2Via2l0LXNjcm9sbGJhci10aHVtYiB7CiAgICAgICAgd2lkdGg6OHB4OwogICAgICAgIG1hcmdpbjogMCAxcHg7CiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4OwogICAgICAgIGJhY2tncm91bmQ6ICNjNGM0YzQ7CiAgICB9CiAgICA6Oi13ZWJraXQtc2Nyb2xsYmFyLXRodW1iOmhvdmVyIHsKICAgICAgICBiYWNrZ3JvdW5kOiAjOTA5MDkwOwogICAgfQoKCgoKICAgIGJvZHkgewogICAgICAgIGJhY2tncm91bmQ6ICNmZmZmZmY7CiAgICAgICAgZm9udC1zaXplOiAxNHB4OwogICAgICAgIGxpbmUtaGVpZ2h0OjIuMTAyNTsKICAgICAgICBmb250LWZhbWlseTogIk1lbmxvIiwgIkFuZGFsZSBNb25vIiwgbW9ub3NwYWNlLCAiTWljcm9zb2Z0IFlhaGVpIiwgc2Fucy1zZXJpZjs7CiAgICAgICAgZm9udC13ZWlnaHQ6IG5vcm1hbDsKICAgICAgICBjb2xvcjogIzNjM2MzYzsKICAgICAgICBwYWRkaW5nOiAwIDM4cHg7CiAgICAgICAgbWF4LXdpZHRoOiA4MjBweDsKICAgICAgICBtYXJnaW46IDAgYXV0bzsKICAgICAgICAtd2Via2l0LXRleHQtc2l6ZS1hZGp1c3Q6IG5vbmU7CiAgICAgICAgd29yZC13cmFwOmJyZWFrLXdvcmQ7CgogICAgICAgIG92ZXJmbG93LXg6IGhpZGRlbjsKICAgICAgICB0ZXh0LXJlbmRlcmluZzogb3B0aW1pemVMZWdpYmlsaXR5OwogICAgfQoKICAgIGJyewogICAgICAgIGxpbmUtaGVpZ2h0OiAyLjEwMjU7CiAgICB9CgoKCiAgICBAbWVkaWEgKG1heC13aWR0aDogNjAwcHgpIHsKICAgICAgICBib2R5ewogICAgICAgICAgICBwYWRkaW5nOiAwIDMwcHg7CiAgICAgICAgfQogICAgfQoKICAgIEBtZWRpYSAobWF4LXdpZHRoOiA0ODBweCkgewogICAgICAgIGJvZHl7CiAgICAgICAgICAgIHBhZGRpbmc6IDAgMjBweDsKICAgICAgICB9CiAgICB9CgogICAgLmdpc3R7CiAgICAgICAgd29yZC1icmVhazogbm9ybWFsOwogICAgfQoKICAgIC5wb3N0ewogICAgICAgIG1hcmdpbi10b3A6IDEwcHg7CiAgICAgICAgbWFyZ2luLWJvdHRvbTogNTBweDsKICAgICAgICBwb3NpdGlvbjogcmVsYXRpdmU7CiAgICB9CgoKCiAgICBpbWd7CiAgICAgICAgbWF4LXdpZHRoOiA5OCU7CiAgICAgICAgbWFyZ2luOiAwLjhlbSBhdXRvIDAuOGVtIGF1dG87CiAgICAgICAgYm9yZGVyLXJhZGl1czogNXB4OwogICAgfQoKICAgIGgxIGltZywgaDIgaW1nLCBoMyBpbWcsIGg0IGltZywgaDUgaW1nLCBoNiBpbWd7CiAgICAgICAgbWFyZ2luOiBhdXRvOwogICAgfQoKICAgIC54Ml9pbWFnZXsKICAgICAgICB6b29tOiA1MCU7CiAgICB9CgogICAgLngzX2ltYWdlewogICAgICAgIHpvb206IDMzLjMzJTsKICAgIH0KCiAgICAueDRfaW1hZ2V7CiAgICAgICAgem9vbTogMjUlOwogICAgfQoKCiAgICBwIGltZ3sKICAgICAgICBtYXJnaW46IDAgYXV0bzsKICAgIH0KCiAgICBwewogICAgICAgIHdvcmQtd3JhcDpicmVhay13b3JkOwogICAgICAgIG92ZXJmbG93OmhpZGRlbjsKICAgICAgICBtYXJnaW46IDEuNWVtIDA7CiAgICB9CgogICAgbGkgcHsKICAgICAgICBsaW5lLWhlaWdodDogMS44ODU7CiAgICAgICAgbWFyZ2luOiAwOwogICAgfQoKICAgIC5wX3BhcnQgewogICAgICAgIG1hcmdpbjogMTBweCAwOwogICAgfQoKICAgIC5wX3BhcnQgcHsKICAgICAgICBtYXJnaW46IDAgMCAwLjZlbSAwOwogICAgfQoKICAgIC8qIHRleHQgaW5kZW50IGZvciBjaGluZXNlIHN0YXJ0cyovCiAgICAvKmgyLCBoMywgaDQsIGg1LCBoNiwgLnBfcGFydCBwLCAudG9kb19pdGVtLCBwewogICAgICAgIHRleHQtaW5kZW50OiAwcHg7CiAgICB9Ki8KICAgIHRhYmxlLCBwcmUsIHN2ZywgLmNvZGVoaWxpdGV0YWJsZXsKICAgICAgICBtYXJnaW4tbGVmdDogMHB4OwogICAgICAgIG1hcmdpbi1yaWdodDogMHB4OwogICAgfQoKICAgIC5jb2RlaGlsaXRldGFibGUgcHJlewogICAgICAgIG1hcmdpbi1sZWZ0OiAwOwogICAgICAgIG1hcmdpbi1yaWdodDogMDsKCiAgICB9CgogICAgLmNvZGVoaWxpdGV0YWJsZSAuY29kZWhpbGl0ZSBwcmV7CiAgICAgICAgYm9yZGVyLWxlZnQ6IG5vbmU7CiAgICB9CgogICAgLyogdGV4dCBpbmRlbnQgZm9yIGNoaW5lc2UgZW5kcyovCgoKICAgIGJsb2NrcXVvdGUgLnBfcGFydCBwLCBsaSAucF9wYXJ0IHB7CiAgICAgICAgdGV4dC1pbmRlbnQ6IDAgIWltcG9ydGFudDsKICAgIH0KCgogICAgaHJ7CiAgICAgICAgbWFyZ2luOiAzOHB4IDA7CiAgICAgICAgYm9yZGVyOiBub25lOwogICAgICAgIGJvcmRlci1ib3R0b206IDFweCBkYXNoZWQgI2UzZTNlMzsKICAgICAgICBjb2xvcjogI2UzZTNlMzsKICAgICAgICBoZWlnaHQ6IDFweDsKICAgICAgICBsaW5lLWhlaWdodDoxcHg7CiAgICAgICAgZm9udC1zaXplOjFweDsKICAgICAgICBvdmVyZmxvdzogaGlkZGVuOwogICAgfQoKCiAgICBoMXsKICAgICAgICBjb2xvcjogIzMzMzMzMzsKICAgICAgICBmb250LXNpemU6IDJlbTsKICAgICAgICB0ZXh0LWFsaWduOiBsZWZ0OwogICAgICAgIG1hcmdpbjogMDsKICAgICAgICBwYWRkaW5nOiAwOwogICAgICAgIGxpbmUtaGVpZ2h0OiAxLjZlbTsKICAgICAgICBtYXJnaW4tdG9wOiAwLjhlbTsKICAgICAgICBtYXJnaW4tYm90dG9tOiAwLjZlbTsKICAgIH0KCiAgICBoMSwgaDIsIGgzewogICAgICAgIGNvbG9yOiAjMzMzMzMzOwogICAgfQoKICAgIGg0ewogICAgICAgIGNvbG9yOiAjMzMzMzMzOwogICAgfQoKCiAgICBoMiwgaDN7CiAgICAgICAgbGluZS1oZWlnaHQ6IDEuNWVtOwogICAgICAgIG1hcmdpbi10b3A6IDEuNWVtOwogICAgICAgIG1hcmdpbi1ib3R0b206IDAuOGVtOwogICAgfQoKICAgIGgyIHsKICAgICAgICBmb250LXNpemU6IDEuNjVlbTsKICAgIH0KCiAgICBoMyB7CiAgICAgICAgZm9udC1zaXplOiAxLjM1ZW0KICAgIH0KCgoKICAgIG9sIHsKICAgICAgICBtYXJnaW46IDA7CiAgICB9CgogICAgdWx7CiAgICAgICAgcGFkZGluZzogNXB4IDM4cHg7CiAgICAgICAgbWFyZ2luOiAwOwogICAgfQoKICAgIHVsIGxpLCBsaXsKICAgICAgICBwYWRkaW5nOiAwOwogICAgICAgIG1hcmdpbjogMDsKICAgIH0KCiAgICB1bCBwLCBvbCBwewogICAgICAgIG92ZXJmbG93OiB2aXNpYmxlOwogICAgfQoKCiAgICBibG9ja3F1b3RlIHsKICAgICAgICAtbW96LWJveC1zaXppbmc6IGJvcmRlci1ib3g7CiAgICAgICAgYm94LXNpemluZzogYm9yZGVyLWJveDsKICAgICAgICBtYXJnaW46IDEuNmVtIDA7CiAgICAgICAgcGFkZGluZzogMCAwIDAgMS4yZW07CiAgICAgICAgYm9yZGVyLWxlZnQ6IDAuNGVtIHNvbGlkICNkZGRkZGQ7CiAgICAgICAgY29sb3I6ICM4ODg4ODg7CiAgICAgICAgbWluLWhlaWdodDoyMHB4OwogICAgfQoKCiAgICBibG9ja3F1b3RlIHAgewogICAgICAgIG1hcmdpbjogMC44ZW0gMDsKICAgIH0KCiAgICBibG9ja3F1b3RlIHNwYW4ubWRfbGluZSB7CiAgICAgICAgbWFyZ2luLWJvdHRvbTogMC4yNWVtOwogICAgICAgIG1hcmdpbi10b3A6IDAuMjVlbTsKICAgIH0KCiAgICBibG9ja3F1b3RlIHVsewogICAgICAgIHBhZGRpbmc6IDAgMTVweDsKICAgIH0KCiAgICBibG9ja3F1b3RlIHNtYWxsIHsKICAgICAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAgICAgbWFyZ2luOiAwLjhlbSAwIDAuOGVtIDEuNWVtOwogICAgICAgIGZvbnQtc2l6ZTogMC45ZW07CiAgICAgICAgY29sb3I6ICNjY2M7CiAgICB9CgoKCiAgICB0YWJsZSB7CiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogdHJhbnNwYXJlbnQ7CiAgICAgICAgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICAgICAgICBib3JkZXItc3BhY2luZzogMDsKICAgICAgICBib3JkZXI6IDFweCBzb2xpZCAjZDlkOWQ5OwogICAgICAgIGJvcmRlci1sZWZ0OiAwOwogICAgICAgIG1hcmdpbi10b3A6IDIwcHg7CiAgICAgICAgbWFyZ2luLWJvdHRvbTogMjBweDsKICAgIH0KCgogICAgdGgsIHRkIHsKICAgICAgICBib3JkZXItbGVmdDogMXB4IHNvbGlkICNkOWQ5ZDk7CiAgICAgICAgcGFkZGluZzogOHB4OwogICAgICAgIGxpbmUtaGVpZ2h0OiAyMHB4OwogICAgICAgIHRleHQtYWxpZ246IGxlZnQ7CiAgICAgICAgdmVydGljYWwtYWxpZ246IHRvcDsKICAgICAgICBib3JkZXItdG9wOiAxcHggc29saWQgI2Q5ZDlkOTsKICAgIH0KCgoKCiAgICBjb2RlewogICAgICAgIGJhY2tncm91bmQ6ICNmNWY1ZjU7CiAgICAgICAgcGFkZGluZzogMCA1cHg7CiAgICAgICAgbWFyZ2luOiAwIDJweDsKICAgIH0KCiAgICBwcmV7CiAgICAgICAgYm9yZGVyOiAxcHggc29saWQgI2U2ZTZlNjsKICAgICAgICBtYXJnaW4tdG9wOiAxLjJlbTsKICAgICAgICBtYXJnaW4tYm90dG9tOiAxLjJlbTsKICAgICAgICBwYWRkaW5nOiAxNXB4IDEwcHg7CiAgICAgICAgZGlzcGxheTogYmxvY2s7CiAgICAgICAgb3ZlcmZsb3c6IGF1dG87CiAgICAgICAgYmFja2dyb3VuZDogI2Y3ZjdmNzsKICAgICAgICBmb250LXNpemU6IDkwJTsKICAgIH0KCiAgICAud2l0aF9saW5lcyBwcmV7CiAgICAgICAgYm9yZGVyOm5vbmU7CiAgICAgICAgbWFyZ2luLXRvcDogMC4yZW07CiAgICAgICAgbWFyZ2luLWJvdHRvbTogMC4yZW07CiAgICAgICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7CiAgICB9CgogICAgLmlzX2NvZGVfZmlsZSBwcmV7CiAgICAgICAgYm9yZGVyOiBub25lOwogICAgICAgIGJhY2tncm91bmQ6IHRyYW5zcGFyZW50OwogICAgfQoKICAgIC5jb2RlaGlsaXRlIHByZXsKICAgICAgICB3b3JkLXdyYXA6IG5vcm1hbDsKICAgIH0KCiAgICBwcmUgY29kZXsKICAgICAgICBib3JkZXI6bm9uZTsKICAgICAgICBiYWNrZ3JvdW5kOiBub25lOwogICAgICAgIHBhZGRpbmc6IDA7CiAgICAgICAgbWFyZ2luOiAwOwogICAgfQoKICAgIHByZSBwewogICAgICAgIG1hcmdpbjogMDsKICAgICAgICBwYWRkaW5nOiAwOwogICAgfQoKICAgIC5jb2RlaGlsaXRlIHRoLCAuY29kZWhpbGl0ZSB0ZHsKICAgICAgICBsaW5lLWhlaWdodDogMS44ZW07CiAgICB9CgoKICAgIGF7CiAgICAgICAgY29sb3I6ICM0MDgzYzQ7CiAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiBub25lOwogICAgICAgIC8vYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHRyYW5zcGFyZW50OwogICAgfQoKICAgIGE6aG92ZXJ7CiAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7CiAgICAgICAgLy9ib3JkZXItYm90dG9tOiAxcHggc29saWQgIzQwODNjNDsKICAgIH0KCiAgICBzdHJvbmcgewogICAgICAgIGNvbG9yOiAjMDAwMDAwOwogICAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgfQoKCiAgICAvKiBmb3IgbWFya2Rvd24gKi8KCiAgICAubGluZW5vcyBwcmV7CgkJYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7CgkJYm9yZGVyOiBub25lOwoJfQoJLmxpbmVub3N7CgkgICAgcGFkZGluZzogMCAwIDAgMTBweDsKCX0KCiAgICAudG9jewogICAgICAgIGJhY2tncm91bmQ6ICNmZGZkZmQ7CiAgICAgICAgYm9yZGVyLXJhZGl1czogNXB4OwogICAgICAgIGJvcmRlcjogMXB4IHNvbGlkICNlNmU2ZTY7CiAgICAgICAgbWFyZ2luOiAyN3B4IDAgNDdweCAwOwogICAgICAgIHBhZGRpbmc6IDEwcHggMDsKICAgIH0KCiAgICAudG9jIHVsewogICAgICAgIC8vcGFkZGluZzogNXB4IDQycHg7CiAgICB9CgogICAgLnRvYyB1bCBsaXsKICAgICAgICBwYWRkaW5nOiAwOwogICAgICAgIG1hcmdpbjogMDsKICAgIH0KICAgIC50b2MgYXsKICAgICAgICBjb2xvcjogIzNjM2MzYzsKICAgIH0KCgoKICAgIC50b2RvX2l0ZW17CiAgICAgICAgbGlzdC1zdHlsZTogbm9uZTsKICAgICAgICBtYXJnaW4tbGVmdDogLTEuNWVtCiAgICB9CiAgICAudG9kb19pdGVtIC50b2RvX2l0ZW0gewogICAgICAgIG1hcmdpbi1sZWZ0OiBhdXRvOwogICAgfQoKICAgIC50b2RvX2RvbmVfaXRlbXsKICAgICAgICBjb2xvcjogIzk5OTk5OTsKICAgIH0KCiAgICAudG9kb191bmRvbmVfaXRlbXsKICAgICAgICBjb2xvcjogI2M4NWE1NzsKICAgIH0KCgogICAgdWwgbGkudG9kb19pdGVtewoJbGlzdC1zdHlsZS10eXBlOiBub25lOwogICAgfQoKICAgIHVsIGxpLnRvZG9faXRlbTpiZWZvcmV7CiAgICAgICAgY29udGVudDogJ1wyNzE1JzsKICAgICAgICBwYWRkaW5nLXJpZ2h0OiAwLjdlbTsKICAgICAgICBmb250LWZhbWlseTogYXJpYWw7CiAgICB9CgogICAgdWwgbGkudG9kb19kb25lX2l0ZW06YmVmb3JlewogICAgICAgIGNvbnRlbnQ6ICdcMjcxMyc7CiAgICAgICAgcGFkZGluZy1yaWdodDogMC43ZW07CiAgICAgICAgZm9udC1mYW1pbHk6IGFyaWFsOwogICAgfQoKICAgIHVsIGxpLnRvZG9faXRlbSBpbnB1dHsKICAgICAgICBkaXNwbGF5Om5vbmUKICAgIH0KCgogICAgLypweWdtZW50cyovCgogICAgLmNvZGVoaWxpdGV7CiAgICAgICAgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQgIWltcG9ydGFudDsKICAgIH0KCiAgICB0YWJsZS5jb2RlaGlsaXRldGFibGV7IGJvcmRlcjpub25lOyB9CgoKICAgIC5jb2RlaGlsaXRldGFibGUgdGR7IGJvcmRlcjogbm9uZTsgcGFkZGluZzogMDt9CgogICAgLmZsb3ctZ3JhcGhpY3t0ZXh0LWFsaWduOiBjZW50ZXJ9CgoKICAgIHRhYmxlLCB0ciwgdGQsIHRoLCB0Ym9keSwgdGhlYWQsIHRmb290LCAubWRfZWNoYXJ0cywgYmxvY2txdW90ZSAubWRfbGluZXsKICAgICAgICBwYWdlLWJyZWFrLWluc2lkZTogYXZvaWQgIWltcG9ydGFudDsKICAgIH0KCiAgICAuZm9vdG5vdGVzIC5tZF9saW5lewogICAgICAgIGRpc3BsYXk6IGlubGluZSAhaW1wb3J0YW50OwogICAgfQoKCiAgICAuaW1nX3J0XzkwewogICAgICAgIHRyYW5zZm9ybTpyb3RhdGUoOTBkZWcpOwogICAgICAgIC1tcy10cmFuc2Zvcm06cm90YXRlKDkwZGVnKTsKICAgICAgICAtbW96LXRyYW5zZm9ybTpyb3RhdGUoOTBkZWcpOwogICAgICAgIC13ZWJraXQtdHJhbnNmb3JtOnJvdGF0ZSg5MGRlZyk7CiAgICAgICAgLW8tdHJhbnNmb3JtOnJvdGF0ZSg5MGRlZyk7CiAgICB9CiAgICAuaW1nX3J0XzE4MHsKICAgICAgICB0cmFuc2Zvcm06cm90YXRlKDE4MGRlZyk7CiAgICAgICAgLW1zLXRyYW5zZm9ybTpyb3RhdGUoMTgwZGVnKTsKICAgICAgICAtbW96LXRyYW5zZm9ybTpyb3RhdGUoMTgwZGVnKTsKICAgICAgICAtd2Via2l0LXRyYW5zZm9ybTpyb3RhdGUoMTgwZGVnKTsKICAgICAgICAtby10cmFuc2Zvcm06cm90YXRlKDE4MGRlZyk7CiAgICB9CiAgICAuaW1nX3J0XzI3MHsKICAgICAgICB0cmFuc2Zvcm06cm90YXRlKDI3MGRlZyk7CiAgICAgICAgLW1zLXRyYW5zZm9ybTpyb3RhdGUoMjcwZGVnKTsKICAgICAgICAtbW96LXRyYW5zZm9ybTpyb3RhdGUoMjcwZGVnKTsKICAgICAgICAtd2Via2l0LXRyYW5zZm9ybTpyb3RhdGUoMjcwZGVnKTsKICAgICAgICAtby10cmFuc2Zvcm06cm90YXRlKDI3MGRlZyk7CiAgICB9CgogICAgLm1kX2hhc19ibG9ja19iZWxvd3sKICAgICAgICBtYXJnaW4tYm90dG9tOiAwLjFlbSAhaW1wb3J0YW50OwogICAgfQogICAgLm1kX2hhc19ibG9ja19iZWxvd19pbWd7CiAgICAgICAgbWFyZ2luLWJvdHRvbTogLTAuNmVtICFpbXBvcnRhbnQ7CiAgICB9CgoKCiAgICAgICAgc3Bhbi5tZF9saW5le21hcmdpbi1ib3R0b206MC41ZW07IGRpc3BsYXk6YmxvY2s7IGxpbmUtaGVpZ2h0OjEuODE4NjYyNX0KICAgICAgICAubWRfbGluZSBicnsgZGlzcGxheTogbm9uZTt9CiAgICAgICAgLmNvZGVoaWxpdGUgLmhsbCB7IGJhY2tncm91bmQtY29sb3I6ICNmZmZmY2MgfQouY29kZWhpbGl0ZSAgeyBiYWNrZ3JvdW5kOiAjZWVlZWRkOyB9Ci5jb2RlaGlsaXRlIC5jIHsgY29sb3I6ICM5OTk5OTkgfSAvKiBDb21tZW50ICovCi5jb2RlaGlsaXRlIC5lcnIgeyBjb2xvcjogI2E2MTcxNzsgYmFja2dyb3VuZC1jb2xvcjogI2UzZDJkMiB9IC8qIEVycm9yICovCi5jb2RlaGlsaXRlIC5rIHsgY29sb3I6ICM4QjAwOEI7IGZvbnQtd2VpZ2h0OiBib2xkIH0gLyogS2V5d29yZCAqLwouY29kZWhpbGl0ZSAubiB7IGNvbG9yOiAjNTU1NTU1IH0gLyogTmFtZSAqLwouY29kZWhpbGl0ZSAubyB7IGNvbG9yOiAjNTU1NTU1IH0gLyogT3BlcmF0b3IgKi8KLmNvZGVoaWxpdGUgLnAgeyBjb2xvcjogIzU1NTU1NSB9IC8qIFB1bmN0dWF0aW9uICovCi5jb2RlaGlsaXRlIC5jbSB7IGNvbG9yOiAjOTk5OTk5IH0gLyogQ29tbWVudC5NdWx0aWxpbmUgKi8KLmNvZGVoaWxpdGUgLmNwIHsgY29sb3I6ICMxZTg4OWIgfSAvKiBDb21tZW50LlByZXByb2MgKi8KLmNvZGVoaWxpdGUgLmMxIHsgY29sb3I6ICM5OTk5OTkgfSAvKiBDb21tZW50LlNpbmdsZSAqLwouY29kZWhpbGl0ZSAuY3MgeyBjb2xvcjogIzhCMDA4QjsgZm9udC13ZWlnaHQ6IGJvbGQgfSAvKiBDb21tZW50LlNwZWNpYWwgKi8KLmNvZGVoaWxpdGUgLmdkIHsgY29sb3I6ICNhYTAwMDAgfSAvKiBHZW5lcmljLkRlbGV0ZWQgKi8KLmNvZGVoaWxpdGUgLmdlIHsgZm9udC1zdHlsZTogaXRhbGljIH0gLyogR2VuZXJpYy5FbXBoICovCi5jb2RlaGlsaXRlIC5nciB7IGNvbG9yOiAjYWEwMDAwIH0gLyogR2VuZXJpYy5FcnJvciAqLwouY29kZWhpbGl0ZSAuZ2ggeyBjb2xvcjogIzAwMDA4MDsgZm9udC13ZWlnaHQ6IGJvbGQgfSAvKiBHZW5lcmljLkhlYWRpbmcgKi8KLmNvZGVoaWxpdGUgLmdpIHsgY29sb3I6ICMwMGFhMDAgfSAvKiBHZW5lcmljLkluc2VydGVkICovCi5jb2RlaGlsaXRlIC5nbyB7IGNvbG9yOiAjODg4ODg4IH0gLyogR2VuZXJpYy5PdXRwdXQgKi8KLmNvZGVoaWxpdGUgLmdwIHsgY29sb3I6ICM1NTU1NTUgfSAvKiBHZW5lcmljLlByb21wdCAqLwouY29kZWhpbGl0ZSAuZ3MgeyBmb250LXdlaWdodDogYm9sZCB9IC8qIEdlbmVyaWMuU3Ryb25nICovCi5jb2RlaGlsaXRlIC5ndSB7IGNvbG9yOiAjODAwMDgwOyBmb250LXdlaWdodDogYm9sZCB9IC8qIEdlbmVyaWMuU3ViaGVhZGluZyAqLwouY29kZWhpbGl0ZSAuZ3QgeyBjb2xvcjogI2FhMDAwMCB9IC8qIEdlbmVyaWMuVHJhY2ViYWNrICovCi5jb2RlaGlsaXRlIC5rYyB7IGNvbG9yOiAjOEIwMDhCOyBmb250LXdlaWdodDogYm9sZCB9IC8qIEtleXdvcmQuQ29uc3RhbnQgKi8KLmNvZGVoaWxpdGUgLmtkIHsgY29sb3I6ICM4QjAwOEI7IGZvbnQtd2VpZ2h0OiBib2xkIH0gLyogS2V5d29yZC5EZWNsYXJhdGlvbiAqLwouY29kZWhpbGl0ZSAua24geyBjb2xvcjogIzhCMDA4QjsgZm9udC13ZWlnaHQ6IGJvbGQgfSAvKiBLZXl3b3JkLk5hbWVzcGFjZSAqLwouY29kZWhpbGl0ZSAua3AgeyBjb2xvcjogIzhCMDA4QjsgZm9udC13ZWlnaHQ6IGJvbGQgfSAvKiBLZXl3b3JkLlBzZXVkbyAqLwouY29kZWhpbGl0ZSAua3IgeyBjb2xvcjogIzhCMDA4QjsgZm9udC13ZWlnaHQ6IGJvbGQgfSAvKiBLZXl3b3JkLlJlc2VydmVkICovCi5jb2RlaGlsaXRlIC5rdCB7IGNvbG9yOiAjYTdhN2E3OyBmb250LXdlaWdodDogYm9sZCB9IC8qIEtleXdvcmQuVHlwZSAqLwouY29kZWhpbGl0ZSAubSB7IGNvbG9yOiAjQjQ1MkNEIH0gLyogTGl0ZXJhbC5OdW1iZXIgKi8KLmNvZGVoaWxpdGUgLnMgeyBjb2xvcjogI0NENTU1NSB9IC8qIExpdGVyYWwuU3RyaW5nICovCi5jb2RlaGlsaXRlIC5uYSB7IGNvbG9yOiAjNjU4YjAwIH0gLyogTmFtZS5BdHRyaWJ1dGUgKi8KLmNvZGVoaWxpdGUgLm5iIHsgY29sb3I6ICM2NThiMDAgfSAvKiBOYW1lLkJ1aWx0aW4gKi8KLmNvZGVoaWxpdGUgLm5jIHsgY29sb3I6ICMwMDhiNDU7IGZvbnQtd2VpZ2h0OiBib2xkIH0gLyogTmFtZS5DbGFzcyAqLwouY29kZWhpbGl0ZSAubm8geyBjb2xvcjogIzAwNjg4QiB9IC8qIE5hbWUuQ29uc3RhbnQgKi8KLmNvZGVoaWxpdGUgLm5kIHsgY29sb3I6ICM3MDdhN2MgfSAvKiBOYW1lLkRlY29yYXRvciAqLwouY29kZWhpbGl0ZSAubmkgeyBjb2xvcjogIzU1NTU1NSB9IC8qIE5hbWUuRW50aXR5ICovCi5jb2RlaGlsaXRlIC5uZSB7IGNvbG9yOiAjMDA4YjQ1OyBmb250LXdlaWdodDogYm9sZCB9IC8qIE5hbWUuRXhjZXB0aW9uICovCi5jb2RlaGlsaXRlIC5uZiB7IGNvbG9yOiAjMDA4YjQ1IH0gLyogTmFtZS5GdW5jdGlvbiAqLwouY29kZWhpbGl0ZSAubmwgeyBjb2xvcjogIzU1NTU1NSB9IC8qIE5hbWUuTGFiZWwgKi8KLmNvZGVoaWxpdGUgLm5uIHsgY29sb3I6ICMwMDhiNDU7IHRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lIH0gLyogTmFtZS5OYW1lc3BhY2UgKi8KLmNvZGVoaWxpdGUgLm54IHsgY29sb3I6ICM1NTU1NTUgfSAvKiBOYW1lLk90aGVyICovCi5jb2RlaGlsaXRlIC5weSB7IGNvbG9yOiAjNTU1NTU1IH0gLyogTmFtZS5Qcm9wZXJ0eSAqLwouY29kZWhpbGl0ZSAubnQgeyBjb2xvcjogIzhCMDA4QjsgZm9udC13ZWlnaHQ6IGJvbGQgfSAvKiBOYW1lLlRhZyAqLwouY29kZWhpbGl0ZSAubnYgeyBjb2xvcjogIzAwNjg4QiB9IC8qIE5hbWUuVmFyaWFibGUgKi8KLmNvZGVoaWxpdGUgLm93IHsgY29sb3I6ICM4QjAwOEIgfSAvKiBPcGVyYXRvci5Xb3JkICovCi5jb2RlaGlsaXRlIC53IHsgY29sb3I6ICNiYmJiYmIgfSAvKiBUZXh0LldoaXRlc3BhY2UgKi8KLmNvZGVoaWxpdGUgLm1iIHsgY29sb3I6ICNCNDUyQ0QgfSAvKiBMaXRlcmFsLk51bWJlci5CaW4gKi8KLmNvZGVoaWxpdGUgLm1mIHsgY29sb3I6ICNCNDUyQ0QgfSAvKiBMaXRlcmFsLk51bWJlci5GbG9hdCAqLwouY29kZWhpbGl0ZSAubWggeyBjb2xvcjogI0I0NTJDRCB9IC8qIExpdGVyYWwuTnVtYmVyLkhleCAqLwouY29kZWhpbGl0ZSAubWkgeyBjb2xvcjogI0I0NTJDRCB9IC8qIExpdGVyYWwuTnVtYmVyLkludGVnZXIgKi8KLmNvZGVoaWxpdGUgLm1vIHsgY29sb3I6ICNCNDUyQ0QgfSAvKiBMaXRlcmFsLk51bWJlci5PY3QgKi8KLmNvZGVoaWxpdGUgLnNiIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5CYWNrdGljayAqLwouY29kZWhpbGl0ZSAuc2MgeyBjb2xvcjogI0NENTU1NSB9IC8qIExpdGVyYWwuU3RyaW5nLkNoYXIgKi8KLmNvZGVoaWxpdGUgLnNkIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5Eb2MgKi8KLmNvZGVoaWxpdGUgLnMyIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5Eb3VibGUgKi8KLmNvZGVoaWxpdGUgLnNlIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5Fc2NhcGUgKi8KLmNvZGVoaWxpdGUgLnNoIHsgY29sb3I6ICMxYzdlNzE7IGZvbnQtc3R5bGU6IGl0YWxpYyB9IC8qIExpdGVyYWwuU3RyaW5nLkhlcmVkb2MgKi8KLmNvZGVoaWxpdGUgLnNpIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5JbnRlcnBvbCAqLwouY29kZWhpbGl0ZSAuc3ggeyBjb2xvcjogI2NiNmMyMCB9IC8qIExpdGVyYWwuU3RyaW5nLk90aGVyICovCi5jb2RlaGlsaXRlIC5zciB7IGNvbG9yOiAjMWM3ZTcxIH0gLyogTGl0ZXJhbC5TdHJpbmcuUmVnZXggKi8KLmNvZGVoaWxpdGUgLnMxIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5TaW5nbGUgKi8KLmNvZGVoaWxpdGUgLnNzIHsgY29sb3I6ICNDRDU1NTUgfSAvKiBMaXRlcmFsLlN0cmluZy5TeW1ib2wgKi8KLmNvZGVoaWxpdGUgLmJwIHsgY29sb3I6ICM2NThiMDAgfSAvKiBOYW1lLkJ1aWx0aW4uUHNldWRvICovCi5jb2RlaGlsaXRlIC52YyB7IGNvbG9yOiAjMDA2ODhCIH0gLyogTmFtZS5WYXJpYWJsZS5DbGFzcyAqLwouY29kZWhpbGl0ZSAudmcgeyBjb2xvcjogIzAwNjg4QiB9IC8qIE5hbWUuVmFyaWFibGUuR2xvYmFsICovCi5jb2RlaGlsaXRlIC52aSB7IGNvbG9yOiAjMDA2ODhCIH0gLyogTmFtZS5WYXJpYWJsZS5JbnN0YW5jZSAqLwouY29kZWhpbGl0ZSAuaWwgeyBjb2xvcjogI0I0NTJDRCB9IC8qIExpdGVyYWwuTnVtYmVyLkludGVnZXIuTG9uZyAqLw==">
+    <!--header_scripts-->
+</head>
+<body>
+
+
+<div class="post">
+    
+    <div class="post_body">
+        <p class="md_block">
+    <span class="md_line">ELK的简单科普文章，加入了自己的一些理解。 内容包括ELK的基本介绍， 应用场景， 架构设计， 监控及自监控， 业界进展及推荐资料等。 </span>
+</p>
+
+
+<h1 id="toc_0">用户故事</h1>
+
+<h2 id="toc_1">场景一</h2>
+
+<p class="md_block">
+    <span class="md_line">作为一个运维工程师， 某天虚拟机出现故障， 想看看虚拟机是否有异常日志，物理机上是否有异常日志，  管理物理机的云平台／系统是否有发生异常日志， 一个个主机 系统登陆过去， 输入账号密码费时费力，有时还会出现记不住密码干着急的情况，大大影响了排障的效率。  有没有一个系统，能够集中查看和搜索日志，不需要繁琐的登陆，  方便的获取排障所需的重要信息， 有异常还能够订阅？</span>
+</p>
+
+
+<h2 id="toc_2">场景二</h2>
+
+<p class="md_block">
+    <span class="md_line">作为一个开发人员， 开发的系统经常需要调用外部的api， 每次出现问题需要去查看日志，看是哪个环节出现问题， 是调用第三方api出错，还是连接数据库出错，只能一个一个查。 另外还会遇到的问题是， 有时候无意中grep了一个大的文件，导致iowait冲高，引发不必要的系统异常告警。 有没有一个工具能够提供各种仪表盘，每次打开一个页面就能一目了然的看到调用各个api的情况，调用了多少次， 失败了多少次？</span>
+</p>
+
+
+<h2 id="toc_3">场景三</h2>
+
+<p class="md_block">
+    <span class="md_line">开发人员上线新版本，上线过程中可能会出现各种问题。  有时不能及时发现会引起哪些异常，对其它系统有哪些影响。有没有一个工具 可以看到和分析上线新版本前后的变化？这样 就能有助于分析相应的故障是否是和上线新版本有关了。 </span>
+</p>
+
+
+<h2 id="toc_4">场景四</h2>
+
+<p class="md_block">
+    <span class="md_line">作为一个团队领导， 团队开发产品已经上线一段时间了， 希望看到产品有多少人访问， 哪个功能访问了多少次，模块的出错率如何，每次都到机器上去跑分析脚本，费时费力，还不直观， 如果产品部署在分布式集群统计起来更是麻烦， 有没有一个系统能以更加简便的方式可以查看到这些情况？</span>
+</p>
+
+
+<p class="md_block">
+    <span class="md_line">上述的问题，ELK统统可以解决。 </span>
+</p>
+
+
+<h1 id="toc_5">ELK是什么鬼?</h1>
+
+<p class="md_block">
+    <span class="md_line">简而言之， 如果说日志是埋在土里的宝藏，那么ELK是开采宝藏的蓝翔挖掘机。 </span>
+</p>
+
+
+<h2 id="toc_6">概述</h2>
+
+<p class="md_block">
+    <span class="md_line">ELK是一套解决方案而不是一款软件， 三个字母分别是三个软件产品的缩写。  E代表Elasticsearch,负责日志的存储和检索； L代表Logstash, 负责日志的收集，过滤和格式化；K代表Kibana，负责日志的展示统计和数据可视化。 </span>
+</p>
+
+
+<p class="md_block">
+    <span class="md_line">其中Elasticsearch是整个ELK的核心， L和K都有相应的替代方案。 这里重点介绍下ElasticSearch（下面简称es）的一些知识。 </span>
+</p>
+
+
+<h2 id="toc_7">相关架构概念</h2>
+<img onerror="this.src='file:///Users/hackstoic/mysite/source/_posts/_image/2016-08-30 21-36-02.png';this.onerror=null;" class="" src="/_image/2016-08-30 21-36-02.png" alt="" title="">
+<ul>
+<li>上面是一个1个node， 2个replica， 3个shard的结构</li>
+<li>cluster（集群）由多个node（节点）组成</li>
+<li>数据会被索引，并保存在index里（类比RDBMS里的DB)</li>
+<li>一个index可以切成多个shard（分片），每个shard可以有多个replica（副本）</li>
+<li>node分为三种类型， 分别是master node，data node ，client node。 每个cluster会有一个node被选举成master，负责维护cluster state data。 </li>
+<li>shard均匀分布在所有可用的data node</li>
+</ul>
+
+<h2 id="toc_8">ES 和 关系型数据库的概念比较</h2>
+
+<p class="md_block md_has_block_below md_has_block_below_img">
+    <span class="md_line">ES本身可以理解为自带搜索引擎的数据库。 有些概念可以和关系型数据库（比如说MySQL） 进行对比。 概念的对比如下表所示：</span>
+</p>
+
+<img onerror="this.src='file:///Users/hackstoic/mysite/source/_posts/_image/2016-08-30 21-46-34.png';this.onerror=null;" class="" src="/_image/2016-08-30 21-46-34.png" alt="" title="">
+<h2 id="toc_9">ELK vs Linux Grep</h2>
+
+<table>
+<thead>
+<tr>
+<th>ELK</th>
+<th>Grep</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>多台机器的日志可以集中查询</td>
+<td>只能查看一台机器的日志</td>
+</tr>
+<tr>
+<td>UI界面显示查询结果</td>
+<td>无数据可视化功能</td>
+</tr>
+<tr>
+<td>支持多维度复杂查询</td>
+<td>较难实现</td>
+</tr>
+<tr>
+<td>查询效率高， 亿条数据秒级查询</td>
+<td>需要登陆系统，进到相关目录， 编写规则， 查询大文件效率低，且对磁盘io也是有影响</td>
+</tr>
+<tr>
+<td>实时性好， 自动索引展示， 配合第三方工具，可以做实时告警</td>
+<td>实时性差， 只能出问题，再到系统去查看</td>
+</tr>
+<tr>
+<td>提供了api接口供第三方工具集成</td>
+<td>没有api接口</td>
+</tr>
+<tr>
+<td>可以查看历史趋势</td>
+<td>不能</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_10">ELK能做什么?</h1>
+
+<h2 id="toc_11">应用场景</h2>
+
+<ul>
+<li>安全领域</li>
+</ul>
+
+<p class="md_block md_has_block_below md_has_block_below_ul">
+    <span class="md_line">通过分析系统日志， 发现攻击或者非法访问行为，可以追踪定位相关安全问题。 比如结合FreeIPA(一款集成的安全信息管理解决方案)， 可以做一些暴力破解行为可视化分析等。 </span>
+</p>
+
+
+<ul>
+<li>网络领域</li>
+</ul>
+
+<p class="md_block md_has_block_below md_has_block_below_ul">
+    <span class="md_line">日志分析和监控可以作为网络设备监控的一种补充， 其它监控系统，如zabbix大多是通过snmp的方式来获取网络设备的性能数据， 这种方式有其局限性，如无法监控端口的flapping， 无法监测到设备引擎挂掉等情况。 此外由于snmp监控的方案通用型不好， 各个厂商有自己的私有OID, 意味着需要对这些不同的厂商适配不同的监控模板。 另外， snmp获取数据的实时性相对会比syslog日志慢一些。   </span>
+</p>
+
+
+<ul>
+<li>应用领域</li>
+</ul>
+
+<p class="md_block md_has_block_below md_has_block_below_ul">
+    <span class="md_line">分析和展示移动端业务的实时情况，如设备类型分析， 业务访问量， 业务访问高峰情况等；<br></span>
+    <span class="md_line">分析nginx日志得到网站的访问情况，如网站点击数， api请求总数、平均每秒请求数、峰值请求数，可以大体了解系统压力，作为系统扩容、性能及压力测试时的直接参考。</span>
+</p>
+
+
+<ul>
+<li>另类应用</li>
+</ul>
+
+<p class="md_block">
+    <span class="md_line">用于社会工程学的用户画像；<br></span>
+    <span class="md_line">函数堆栈调用分析；<br></span>
+    <span class="md_line">网络流量分析</span>
+</p>
+
+
+<h1 id="toc_12">ELK落地方案</h1>
+
+<h2 id="toc_13">架构选型</h2>
+
+<p class="md_block">
+    <span class="md_line">下面是一种常见的ELK架构</span>
+</p>
+
+
+<p class="md_block md_has_block_below md_has_block_below_ul">
+    <span class="md_line md_line_dom_embed"><img onerror="this.src='file:///Users/hackstoic/mysite/source/_posts/_image/2016-09-05 16-53-12.png';this.onerror=null;" class="" src="/_image/2016-09-05 16-53-12.png" alt="" title=""><br></span>
+    <span class="md_line">这个架构的优点是简单，维护起来也方便。 但是也有一些问题。 </span>
+</p>
+
+
+<ul>
+<li>shipper耗主机资源。 直接用logstash当作日志采集的agent， 会比较重，会占用不少主机资源， 因此官方现在已经不推荐用logstash当shipper了， 推荐使用beat。 </li>
+<li> 权限控制的问题。 kbana自身对页面访问权限控制这块是比较弱。 如果希望对页面的访问权限做控制， 可以考虑使用es search guard + ldap + nginx的方案来实现。 </li>
+<li>跨网络分区的问题 。如果有多个数据中心，且日志的流量比较大， 让日志跨网络分区进行传输，无疑会占用不少宝贵的专线带宽资源，会增加运营的成本，且有可能影响到其它应用的正常运行。 有一个解决此类问题的方案， 在各个网络分区各搭建一套ELK集群，日志不跨网络分区进行传输，  然后单独使用某些es节点作为tribe角色， 对搜索请求进行合并和路由。 </li>
+</ul>
+
+<p class="md_block md_has_block_below md_has_block_below_img">
+    <span class="md_line">为解决上面提到的问题， 设计了以下架构：</span>
+</p>
+
+<img onerror="this.src='file:///Users/hackstoic/mysite/source/_posts/_image/2016-08-30 23-23-42.png';this.onerror=null;" class="" src="/_image/2016-08-30 23-23-42.png" alt="" title="">
+<p class="md_block">
+    <span class="md_line">当然， 上面的架构也不是一层不变。如果日志量更大，可以考虑使用hangout来代替logstash， 用kafka来替代redis， 从而获得更大的日志吞吐量。 </span>
+</p>
+
+
+<h2 id="toc_14">监控告警</h2>
+
+<h3 id="toc_15">日志的告警</h3>
+
+<p class="md_block">
+    <span class="md_line">可以采用elastalert。 当然也可以自己开发应用从es或者kafka取数据来做分析。 </span>
+</p>
+
+
+<h3 id="toc_16">自身的监控</h3>
+
+<ul>
+<li>使用zabbix 监控。 网上可以找到对应的模版。 </li>
+<li>使用官方提供的marvel方案， 不过是收费的。 </li>
+<li>使用open falcon监控。 我们内部有一套open falcon系统， 所以我们尝试用open falcon来监控es集群。 </li>
+</ul>
+
+<h1 id="toc_17">挑战和思路</h1>
+
+<h2 id="toc_18">SaaS化</h2>
+
+<p class="md_block">
+    <span class="md_line">就是把ELK提供为SaaS服务，目前新浪云， 青云， aws等云平台上面已经有相应的服务了。 把日志分析系统SaaS化， 可以免去用户搭建和维护elk集群的麻烦，减少用户的使用成本，同时也可以给云平台自身带来更多的附加值。  </span>
+</p>
+
+
+<h2 id="toc_19">大数据分析</h2>
+
+<p class="md_block">
+    <span class="md_line">用ELK堆栈来存储和索引海量的日志数据， 后面再结合大数据分析和机器学习工具，可以做智能运维分析， 减少运维人员之苦。 </span>
+</p>
+
+
+<h1 id="toc_20">推荐资料</h1>
+
+<ul>
+<li>《Elasticsearch 权威指南》</li>
+<li>《ELK中文指南》</li>
+<li>《Mastering ElasticSearch》</li>
+<li>《Manning Elasticsearch in Action》</li>
+</ul>
+
+<p class="md_block">
+    <span class="md_line">如果需要一些ELK相关技术分享ppt， 电子书等，可以关注我们的公众号，在公众号里回复您的姓名，邮箱，注明elk， 进行获取。 我们将在三个工作日内将资料发送到您的邮箱。</span>
+</p>
+    </div>
+</div>
+
+<!--mathjax-->
+
+</body>
+</html></div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/09/11/浅谈日志分析系统ELK/" data-id="cisy4qffd000mzx3h3q84hdzs" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/09/10/内网穿透/" class="next"></a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/11/浅谈日志分析系统ELK/">浅谈日志分析系统ELK</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/内网穿透/">内网穿透</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/06/kubernetes初探/">kubernetes初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">ELK不权威指南</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
