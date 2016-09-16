@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>Golang优秀开源项目汇总（持续更新。。。） | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Golang优秀开源项目汇总（持续更新。。。）</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Golang优秀开源项目汇总（持续更新。。。）</h1><div class="post-meta">Jul 24, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>[TOC]<br><strong>Created By Hackstoic,</strong></p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="viewpoint from a programmer, think like a life hacker."><title>Golang优秀开源项目汇总（持续更新。。。） | Hackstoic's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Golang优秀开源项目汇总（持续更新。。。）</h1><a id="logo" href="/.">Hackstoic's Blog</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Golang优秀开源项目汇总（持续更新。。。）</h1><div class="post-meta">Jul 24, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>[TOC]<br><strong>Created By Hackstoic,</strong><br>|      |        |         |         |</p>
 <h1 id="监控系统"><a href="#监控系统" class="headerlink" title="监控系统"></a>监控系统</h1><table>
 <thead>
 <tr>
@@ -75,9 +75,22 @@
 <td><a href="https://github.com/gravitational/satellite" target="_blank" rel="external">https://github.com/gravitational/satellite</a></td>
 <td>用于监测kubernetes健康状态的一个工具／库。 其特点是：轻量级定期测试， 高可用性和弹性网络分区， 无单点故障， 以时间序列的格式存储监控数据。</td>
 </tr>
+<tr>
+<td>12</td>
+<td>checkup</td>
+<td><a href="https://github.com/sourcegraph/checkup" target="_blank" rel="external">https://github.com/sourcegraph/checkup</a></td>
+<td>一个分布式的无锁的站点健康状态检查工具。 支持检查http， tcp， dns等的状态 并可将结果保存在s3。 自带了一个美观的界面。</td>
+</tr>
+<tr>
+<td>13</td>
+<td>zabbixctl</td>
+<td><a href="https://github.com/kovetskiy/zabbixctl" target="_blank" rel="external">https://github.com/kovetskiy/zabbixctl</a></td>
+<td>Zabbixctl 是采用Zabbix服务API的命令行工具，它提供了有效的方式去查询和处理trigger 状态、主机最新数据和用户组。</td>
+</tr>
 </tbody>
 </table>
-<h1 id="容器技术"><a href="#容器技术" class="headerlink" title="容器技术"></a>容器技术</h1><table>
+<pre><code>|
+</code></pre><h1 id="容器技术"><a href="#容器技术" class="headerlink" title="容器技术"></a>容器技术</h1><table>
 <thead>
 <tr>
 <th>序号</th>
@@ -213,6 +226,12 @@
 <td><a href="http://github.com/tsuru/tsuru" target="_blank" rel="external">http://github.com/tsuru/tsuru</a></td>
 <td>在 Tsuru 的 PaaS 服务下，你可以选择自己的编程语言，选择使用 SQL 或者 NoSQL 数据库，memcache、redis、等等许多服务，甚至与你可以使用 Git 版本控制工具来上传你应用。</td>
 </tr>
+<tr>
+<td>7</td>
+<td>atlantis</td>
+<td><a href="https://github.com/ooyala/atlantis" target="_blank" rel="external">https://github.com/ooyala/atlantis</a></td>
+<td>Atlantis 是一款基于 Docker，使用 Go 编写，为 HTTP 应用准备的开源 PaaS。Atlantis 可以在路由请求中轻松的构建和部署应用到容器。Atlantis 在 Ooyala 的新应用中得到了很广泛的应用。</td>
+</tr>
 </tbody>
 </table>
 <h1 id="大数据"><a href="#大数据" class="headerlink" title="大数据"></a>大数据</h1><table>
@@ -242,6 +261,48 @@
 <td>goml</td>
 <td><a href="https://github.com/cdipaolo/goml" target="_blank" rel="external">https://github.com/cdipaolo/goml</a></td>
 <td>机器学习的库</td>
+</tr>
+</tbody>
+</table>
+<h1 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h1><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>名称</th>
+<th>项目地址</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>kite</td>
+<td><a href="https://github.com/koding/kite" target="_blank" rel="external">https://github.com/koding/kite</a></td>
+<td>一个基于go语言的微服务框架, Kite是Koding公司内部的一个框架, 该框架提供服务发现，多种认证功能，服务端通过RPC进行通信，同时还提供了websocket的js库，方便浏览器于服务器间进行通信。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>goa</td>
+<td><a href="https://github.com/goadesign/goa" target="_blank" rel="external">https://github.com/goadesign/goa</a></td>
+<td>Goa 是一款用 Go 用于构建微服务的框架，采用独特的设计优先的方法。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Go-kit</td>
+<td><a href="http://github.com/go-kit/kit" target="_blank" rel="external">http://github.com/go-kit/kit</a></td>
+<td>Go-kit 是一个 Go 语言的分布式开发包，用于开发微服务。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Hprose</td>
+<td><a href="http://github.com/andot/hprose" target="_blank" rel="external">http://github.com/andot/hprose</a></td>
+<td>Hprose 是高性能远程对象服务引擎（High Performance Remote Object Service Engine）的缩写 —— 微服务首选引擎。它是一个先进的轻量级的跨语言跨平台面向对象的高性能远程动态通讯中间件。它不仅简单易用，而且功能强大。你只需要稍许的时间去学习，就能用它轻松构建跨语言跨平台的分布式应用系统了。</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Gizmo</td>
+<td><a href="http://github.com/NYTimes/gizmo" target="_blank" rel="external">http://github.com/NYTimes/gizmo</a></td>
+<td>纽约时报开源的go微服务工具.提供如下特性:标准化配置和日志;可配置策略的状态监测端点;用于管理 pprof 端点和日志级别的配置;结构化日志，提供基本请求信息;端点的有用度量;优雅的停止服务; 定义期待和词汇的基本接口</td>
 </tr>
 </tbody>
 </table>
@@ -437,51 +498,39 @@
 </tr>
 <tr>
 <td>4</td>
-<td>Go-kit</td>
-<td><a href="http://github.com/go-kit/kit" target="_blank" rel="external">http://github.com/go-kit/kit</a></td>
-<td>Go-kit 是一个 Go 语言的分布式开发包，用于开发微服务。</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Hprose</td>
-<td><a href="http://github.com/andot/hprose" target="_blank" rel="external">http://github.com/andot/hprose</a></td>
-<td>Hprose 是高性能远程对象服务引擎（High Performance Remote Object Service Engine）的缩写 —— 微服务首选引擎。它是一个先进的轻量级的跨语言跨平台面向对象的高性能远程动态通讯中间件。它不仅简单易用，而且功能强大。你只需要稍许的时间去学习，就能用它轻松构建跨语言跨平台的分布式应用系统了。</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Gizmo</td>
-<td><a href="http://github.com/NYTimes/gizmo" target="_blank" rel="external">http://github.com/NYTimes/gizmo</a></td>
-<td>纽约时报开源的go微服务工具.提供如下特性:标准化配置和日志;可配置策略的状态监测端点;用于管理 pprof 端点和日志级别的配置;结构化日志，提供基本请求信息;端点的有用度量;优雅的停止服务; 定义期待和词汇的基本接口</td>
-</tr>
-<tr>
-<td>7</td>
 <td>mgmt</td>
 <td><a href="http://github.com/purpleidea/mgmt" target="_blank" rel="external">http://github.com/purpleidea/mgmt</a></td>
 <td>mgmt 是一个分布式的，事件驱动的配置管理工具。该工具支持并行执行，其 librarification 作为新的及已存在的软件的基础管理工具。</td>
 </tr>
 <tr>
-<td>8</td>
+<td>5</td>
 <td>Yoke</td>
 <td><a href="http://github.com/nanopack/yoke" target="_blank" rel="external">http://github.com/nanopack/yoke</a></td>
 <td>Yoke 是 Postgres 的高可用集群，具有自动切换和自动集群恢复。Postgres冗余/自动故障转移解决方案，提供一个高可用PostgreSQL集群的简单管理。</td>
 </tr>
 <tr>
-<td>9</td>
+<td>6</td>
 <td>SeaweedFS</td>
 <td><a href="http://github.com/chrislusf/seaweedfs" target="_blank" rel="external">http://github.com/chrislusf/seaweedfs</a></td>
 <td>SeaweedFS 是简单，高伸缩性的分布式文件系统，包含两部分：存储数十亿的文件；快速为文件服务。SeaweedFS 作为支持全 POSIX 文件系统语义替代，Seaweed-FS 选择仅实现 key-file 的映射，类似 “NoSQL”，也可以说是 “NoFS”。</td>
 </tr>
 <tr>
-<td>10</td>
+<td>7</td>
 <td>Glow</td>
 <td><a href="http://github.com/chrislusf/glow" target="_blank" rel="external">http://github.com/chrislusf/glow</a></td>
-<td>low 是使用 Go 编写的易用分布式计算系统，是 Hadoop Map Reduce，Spark，Flint，Samza 等等的替代品。Glow 的目标是提供一个库，可以在并行线程或者分布式集群机器中进行更简单计算。</td>
+<td>Glow 是使用 Go 编写的易用分布式计算系统，是 Hadoop Map Reduce，Spark，Flint，Samza 等等的替代品。Glow 的目标是提供一个库，可以在并行线程或者分布式集群机器中进行更简单计算。</td>
 </tr>
 <tr>
-<td>11</td>
+<td>8</td>
 <td>Nomad</td>
 <td><a href="http://github.com/hashicorp/nomad" target="_blank" rel="external">http://github.com/hashicorp/nomad</a></td>
 <td>Nomad 是一个集群管理器和调度器，专为微服务和批量处理工作流设计。Nomad 是分布式，高可用，可扩展到跨数据中心和区域的数千个节点。</td>
+</tr>
+<tr>
+<td>9</td>
+<td>dcmp</td>
+<td><a href="https://github.com/silenceper/dcmp" target="_blank" rel="external">https://github.com/silenceper/dcmp</a></td>
+<td>DCMP是分布式配置管理平台。提供了一个etcd的管理界面，可通过界面修改配置信息，借助confd可实现配置文件的同步。</td>
 </tr>
 </tbody>
 </table>
@@ -1055,4 +1104,4 @@
 </tr>
 </tbody>
 </table>
-</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/07/24/golang-open-source-projects/" data-id="cisy6ohl90007n13hxpuyasup" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/07/我的IT备忘录/" class="pre">我的IT备忘录</a><a href="/2016/07/17/hello-world/" class="next">Hello World</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/11/浅谈日志分析系统ELK/">浅谈日志分析系统ELK</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/内网穿透/">内网穿透</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/06/kubernetes初探/">kubernetes初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">ELK不权威指南</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/2016/07/24/golang-open-source-projects/" data-id="cit5id5w10009833h22dzz128" class="article-share-link">分享到</a><div class="tags"></div><div class="post-nav"><a href="/2016/08/07/我的IT备忘录/" class="pre">我的IT备忘录</a><a href="/2016/07/17/hello-world/" class="next">Hello World</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/09/16/2016 上海 Qcon 值得关注的技术/">2016 上海 Qcon 值得关注的技术</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/10/内网穿透/">内网穿透</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/06/kubernetes初探/">kubernetes初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/28/0gopher meetup 深圳站2016-08-28/">gopher meetup 深圳站2016-08-28</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（2）/">开源web堡垒机GateOne初探（2）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/开源web堡垒机GateOne初探（1）/">开源web堡垒机GateOne初探（1）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/搭建NGINX+UWSGI+DJANGO+MYSQL环境/">搭建NGINX+UWSGI+DJANGO+MYSQL环境</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/个人博客建设之路/">个人网站建设之路</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/数据分析遐想/">数据分析遐想</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/浅谈日志分析系统ELK/">ELK不权威指南</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://coolshell.cn/" title="酷壳" target="_blank">酷壳</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Hackstoic's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
